@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 
 import tailwindCSSStylesRef from "./styles/tailwind.css";
+import indexStylesRef from "./styles/index.css";
 
 export function meta() {
   return {
@@ -19,6 +20,12 @@ export function meta() {
 
 export function links() {
   return [
+    {
+      rel: "icon",
+      type: "image/svg",
+      href: "/logo.svg"
+    },
+
     {
       rel: "preconnect",
       href: "https://fonts.googleapis.com",
@@ -34,6 +41,7 @@ export function links() {
     },
 
     { rel: "stylesheet", href: tailwindCSSStylesRef },
+    { rel: "stylesheet", href: indexStylesRef },
   ];
 }
 

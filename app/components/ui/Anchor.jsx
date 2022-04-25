@@ -1,4 +1,4 @@
-import { FOCUS_STYLES } from "./constants";
+import { FOCUS_STYLES } from "../constants";
 
 export default function Anchor({
   children,
