@@ -23,7 +23,7 @@ export function links() {
     {
       rel: "icon",
       type: "image/svg",
-      href: "/logo.svg"
+      href: "/logo.svg",
     },
 
     {

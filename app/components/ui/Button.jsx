@@ -14,7 +14,7 @@ export default function Button({
         ghost
           ? "border-neutral-800 bg-neutral-900 hover:border-neutral-700"
           : "border-blue-400 bg-blue-500 hover:border-blue-300",
-          DISABLED_STYLES,
+        DISABLED_STYLES,
         FOCUS_STYLES,
         className,
       ].join(" ")}
