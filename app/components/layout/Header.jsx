@@ -9,66 +9,78 @@ import Container from "./Container";
 const NAVIGATION_LINKS = {
   ANONYMOUS: {
     HOME: [
-    {
-      label: "Post a job",
-      to: "/signup"
-    },
-    {
-      label: "Login",
-      to: "/login",
-      ghost: true
-    }],
-    AUTHENTICATION: {
-      SIGNUP: [{
+      {
+        label: "Post a job",
+        to: "/signup",
+      },
+      {
         label: "Login",
         to: "/login",
-        ghost: true
-      }],
-      LOGIN: [{
-        label: "Sign up",
-        to: "/signup",
-        ghost: true
-      }]
-    }
+        ghost: true,
+      },
+    ],
+    AUTHENTICATION: {
+      SIGNUP: [
+        {
+          label: "Login",
+          to: "/login",
+          ghost: true,
+        },
+      ],
+      LOGIN: [
+        {
+          label: "Sign up",
+          to: "/signup",
+          ghost: true,
+        },
+      ],
+    },
   },
   USER: {
-    HOME: [{
-      label: "Dashboard",
-      to: "/dashboard"
-    }],
-    DASHBOARD: [{
-      label: "Home",
-      to: "/",
-      ghost: true
-    }]
-  }
-}
+    HOME: [
+      {
+        label: "Dashboard",
+        to: "/dashboard",
+      },
+    ],
+    DASHBOARD: [
+      {
+        label: "Home",
+        to: "/",
+        ghost: true,
+      },
+    ],
+  },
+};
 
 function TabLink({ to, children, ...otherProps }) {
   return (
     <li>
       <Button as={NavLink} to={to} ghost {...otherProps}>
         {function ({ isActive }) {
-          return <span className={isActive ? "text-blue-500" : ""}>
-          {children}
-          </span>
+          return (
+            <span className={isActive ? "text-blue-500" : ""}>{children}</span>
+          );
         }}
       </Button>
     </li>
-  )
+  );
 }
 
 export default function Header({
   showPitch = false,
   onAuthentication = false,
 }) {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <div className="border-b border-neutral-800/50 bg-white/5 py-4 flex flex-col items-stretch justify-start gap-8">
       <Container
         as="nav"
-        className={["flex flex-row items-center justify-between gap-4", onAuthentication ? "px-8" : ""].join(" ")}
+        className={[
+          "flex flex-row items-center justify-between gap-4",
+          onAuthentication ? "px-8" : "",
+        ].join(" ")}
       >
         <ul className="flex flex-row items-center justify-between gap-3">
           <li>
@@ -99,15 +111,20 @@ export default function Header({
           ) : (
             <Fragment>
               <li>
-                <Button as={Link} to={isAuthenticated ? "/dashboard/jobs" : "/signup"}>
+                <Button
+                  as={Link}
+                  to={isAuthenticated ? "/dashboard/jobs" : "/signup"}
+                >
                   {isAuthenticated ? "Dashboard" : "Post a job"}
                 </Button>
               </li>
-              {isAuthenticated ? null : <li>
-                <Button as={Link} to="/login" ghost>
-                  Login
-                </Button>
-              </li>}
+              {isAuthenticated ? null : (
+                <li>
+                  <Button as={Link} to="/login" ghost>
+                    Login
+                  </Button>
+                </li>
+              )}
             </Fragment>
           )}
         </ul>
@@ -152,21 +169,19 @@ export default function Header({
           </div>
         </Container>
       ) : null}
-      {
-        isAuthenticated ? (
-          <Container>
-            <nav className="flex flex-row items-stretch justify-start gap-2 overflow-auto">
-              <ul className="flex flex-row items-stretch justify-start gap-2">
-                <TabLink to="/dashboard/jobs">Jobs</TabLink>
-                <TabLink to="/dashboard/profile">Profile</TabLink>
-                <TabLink to="/dashboard/store">Store</TabLink>
-                <TabLink to="/dashboard/analytics">Analytics</TabLink>
-                <TabLink to="/dashboard/account">Account</TabLink>
-              </ul>
-            </nav>
-          </Container>
-        ) : null
-      }
+      {isAuthenticated ? (
+        <Container>
+          <nav className="flex flex-row items-stretch justify-start gap-2 overflow-auto">
+            <ul className="flex flex-row items-stretch justify-start gap-2">
+              <TabLink to="/dashboard/jobs">Jobs</TabLink>
+              <TabLink to="/dashboard/profile">Profile</TabLink>
+              <TabLink to="/dashboard/store">Store</TabLink>
+              <TabLink to="/dashboard/analytics">Analytics</TabLink>
+              <TabLink to="/dashboard/account">Account</TabLink>
+            </ul>
+          </nav>
+        </Container>
+      ) : null}
     </div>
   );
 }
