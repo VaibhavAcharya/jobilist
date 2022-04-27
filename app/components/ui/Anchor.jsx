@@ -9,7 +9,11 @@ export default function Anchor({
 }) {
   return (
     <As
-      className={[styled ? "text-blue-500" : null, FOCUS_STYLES, className].join(" ")}
+      className={[
+        styled ? "text-blue-500" : null,
+        FOCUS_STYLES,
+        className,
+      ].join(" ")}
       {...otherProps}
     >
       {children}

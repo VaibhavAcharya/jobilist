@@ -8,7 +8,17 @@ export default function Footer() {
         as="footer"
         className="flex flex-col items-stretch justify-start gap-4"
       >
-        <p className="text-sm text-center text-neutral-400">Build by <Anchor href="#" target="_blank">Vaibhav Acharya</Anchor> and <Anchor href="#" target="_blank">Naman Vyas</Anchor>.</p>
+        <p className="text-sm text-center text-neutral-400">
+          Build by{" "}
+          <Anchor href="#" target="_blank">
+            Vaibhav Acharya
+          </Anchor>{" "}
+          and{" "}
+          <Anchor href="#" target="_blank">
+            Naman Vyas
+          </Anchor>
+          .
+        </p>
       </Container>
     </div>
   );
