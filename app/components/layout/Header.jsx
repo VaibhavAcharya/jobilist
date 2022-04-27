@@ -33,7 +33,7 @@ export default function Header({ showPitch = false, posting = false }) {
               </Button>
             ) : (
               <Button as={Link} to="/post">
-                Post a job
+                Post a job (50% off)
               </Button>
             )}
           </li>
