@@ -153,3 +153,26 @@ export const JOB_EXPIRE_OPTIONS = [
     price: 2,
   },
 ];
+
+export const JOB_PIN_OPTIONS = [
+  {
+    value: "0",
+    label: "Don't",
+    price: 0,
+  },
+  {
+    value: "7",
+    label: "1 week",
+    price: 1,
+  },
+  {
+    value: "15",
+    label: "15 days",
+    price: 2,
+  },
+  {
+    value: "31",
+    label: "1 month",
+    price: 3,
+  },
+];

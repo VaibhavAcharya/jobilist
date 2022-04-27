@@ -1,7 +1,10 @@
 import { Fragment, useState } from "react";
 
 import { Listbox } from "@headlessui/react";
+
 import Button from "./Button";
+
+import Selector from "./../icons/Selector";
 
 export default function Select({
   id,
@@ -9,6 +12,7 @@ export default function Select({
   options = [],
   defaultOption,
   onChange,
+  disabled = false,
   ...otherProps
 }) {
   const [option, setOption] = useState(defaultOption);
@@ -20,6 +24,7 @@ export default function Select({
         name={name}
         type="hidden"
         value={option.value}
+        disabled={disabled}
         {...otherProps}
       />
 
@@ -29,17 +34,19 @@ export default function Select({
           setOption(option);
           onChange?.(option);
         }}
+        disabled={disabled}
       >
         <div className="flex-1 relative">
           <Listbox.Button
             as={Button}
             type="button"
-            className="relative w-full flex flex-row items-center justify-start"
+            className="relative whitespace-nowrap w-full flex flex-row items-center justify-between gap-2"
             ghost
           >
-            {option.label}
+            <span>{option.label}</span>
+            <Selector size={16} />
           </Listbox.Button>
-          <Listbox.Options className="absolute z-10 w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-md divide-y divide-dashed divide-neutral-800 focus:outline-none">
+          <Listbox.Options className="whitespace-nowrap absolute z-10 w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-md divide-y divide-dashed divide-neutral-800 focus:outline-none">
             {options.map(function (_option) {
               return (
                 <Listbox.Option

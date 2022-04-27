@@ -19,6 +19,7 @@ import { addColorBallToOptions } from "../../components/ui/ColorBall";
 import {
   BRAND_COLOR_OPTIONS,
   JOB_EXPIRE_OPTIONS,
+  JOB_PIN_OPTIONS,
   JOB_TYPES,
 } from "../../constants";
 const BRAND_COLOR_OPTIONS_WITH_BALL =
@@ -136,6 +137,7 @@ export default function Post() {
                 id="description"
                 name="description"
                 label="Description"
+                placeholder="Describe what your organization does here..."
                 rows="5"
                 optional
               />
@@ -160,7 +162,7 @@ export default function Post() {
           >
             <h2 className="font-medium text-2xl">Fill posts</h2>
 
-            <div className="flex flex-col items-stretch justify-start gap-0 divide-y divide-dashed divide-neutral-800">
+            <div className="flex flex-col items-stretch justify-start gap-0 border-y border-dashed border-neutral-800 divide-y divide-dashed divide-neutral-800">
               {[...Array(postCount)].map(function (_, i) {
                 return (
                   <article
@@ -246,6 +248,7 @@ export default function Post() {
                           id={`posts[${i}].description`}
                           name={`posts[${i}].description`}
                           label="Description"
+                          placeholder="Describe the job here; areas of responsibility, typical day of candidate, skills and qualifications required to perform the role."
                           rows="5"
                           optional
                         />
@@ -256,20 +259,29 @@ export default function Post() {
                           label="Tags (Comma separated)"
                           placeholder="Eg. flutter, android, anything"
                         />
-                        <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
-                          <Field
-                            component={Select}
-                            id={`posts[${i}].branded`}
-                            name={`posts[${i}].branded`}
-                            label="Expires after"
-                            options={JOB_EXPIRE_OPTIONS}
-                            defaultOption={JOB_EXPIRE_OPTIONS[0]}
-                          />
+                        <div className="flex flex-row items-stretch justify-end flex-wrap gap-4">
                           <Field
                             component={Switch}
                             id={`posts[${i}].branded`}
                             name={`posts[${i}].branded`}
                             label="Show branded"
+                          />
+                          {/* <Field
+                            component={Select}
+                            id={`posts[${i}].pinned`}
+                            name={`posts[${i}].pinned`}
+                            label="Pin to top"
+                            options={JOB_PIN_OPTIONS}
+                            defaultOption={JOB_PIN_OPTIONS[0]}
+                          /> */}
+                          <Field
+                            component={Select}
+                            id={`posts[${i}].expiresAfter`}
+                            name={`posts[${i}].expiresAfter`}
+                            label="Expires after"
+                            options={JOB_EXPIRE_OPTIONS}
+                            defaultOption={JOB_EXPIRE_OPTIONS[1]}
+                            disabled
                           />
                         </div>
                       </div>

@@ -17,7 +17,9 @@ export default function Field({
         htmlFor={id}
         className="flex flex-row items-center justify-start gap-2"
       >
-        <span className="font-medium text-xs uppercase">{label}</span>
+        <span className="font-medium text-xs uppercase whitespace-nowrap">
+          {label}
+        </span>
         {optional ? (
           <span className="text-xs text-neutral-400">(Optional)</span>
         ) : null}

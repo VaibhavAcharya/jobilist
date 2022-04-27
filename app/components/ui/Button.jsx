@@ -1,14 +1,13 @@
+import { forwardRef } from "react";
 import { DISABLED_STYLES, FOCUS_STYLES } from "../constants";
 
-export default function Button({
-  as: As = "button",
-  children,
-  ghost = false,
-  className = "",
-  ...otherProps
-}) {
+function Button(
+  { as: As = "button", children, ghost = false, className = "", ...otherProps },
+  ref
+) {
   return (
     <As
+      ref={ref}
       className={[
         "font-medium text-sm text-white border border-opacity-50 px-3 py-1 rounded-md block",
         ghost
@@ -24,3 +23,5 @@ export default function Button({
     </As>
   );
 }
+
+export default forwardRef(Button);

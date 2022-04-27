@@ -6,14 +6,12 @@ export function addColorBallToOptions(options) {
   return options.map(function (option) {
     return {
       ...option,
-      label: function () {
-        return (
-          <div className="flex flex-row items-center justify-start gap-2">
-            <ColorBall color={option.ballBG} />
-            <span>{option.label}</span>
-          </div>
-        );
-      },
+      label: (
+        <div className="flex flex-row items-center justify-start gap-2">
+          <ColorBall color={option.ballBG} />
+          <span>{option.label}</span>
+        </div>
+      ),
     };
   });
 }
