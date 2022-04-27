@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 
 import { json } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 
+import Button from "../../components/ui/Button";
 import Field from "./../../components/ui/Field";
 import Textarea from "../../components/ui/Textarea";
-import Button from "../../components/ui/Button";
+import FileInput from "../../components/ui/FileInput";
 import Slider from "../../components/ui/Slider";
 
 import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
+import Select from "../../components/ui/Select";
+import Switch from "../../components/ui/Switch";
+import { addColorBallToOptions } from "../../components/ui/ColorBall";
+
+import {
+  BRAND_COLOR_OPTIONS,
+  JOB_EXPIRE_OPTIONS,
+  JOB_TYPES,
+} from "../../constants";
+const BRAND_COLOR_OPTIONS_WITH_BALL =
+  addColorBallToOptions(BRAND_COLOR_OPTIONS);
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -57,10 +69,9 @@ export async function action({ request }) {
 }
 
 export default function Post() {
-  const [step, setStep] = useState(0);
   const data = useActionData();
 
-  const [postCount, setPostCount] = useState(3);
+  const [postCount, setPostCount] = useState(2);
 
   useEffect(
     function () {
@@ -79,36 +90,46 @@ export default function Post() {
           className="flex flex-col items-stretch justify-start gap-8"
         >
           <section
-            className={[
-              "w-[min(480px,_100%)] mx-auto flex flex-col items-stretch justify-start gap-6",
-              step !== 0 ? "hidden" : "",
-            ].join(" ")}
+            id="section-company"
+            className="w-[min(720px,_100%)] mx-auto flex flex-col items-stretch justify-start gap-6"
           >
             <h2 className="font-medium text-2xl">Enter company information</h2>
 
             <div className="flex flex-col items-stretch justify-start gap-4">
-              <Field
-                id="name"
-                name="name"
-                type="text"
-                label="Name"
-                placeholder="Eg. Google"
-              />
-              <Field
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                placeholder="Eg. google@gmail.com"
-                secret
-              />
-              <Field
-                id="website"
-                name="website"
-                type="url"
-                label="Website"
-                placeholder="Eg. https://www.google.com"
-              />
+              <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
+                <Field
+                  id="name"
+                  name="name"
+                  type="text"
+                  label="Name"
+                  placeholder="Eg. Google"
+                />
+                <Field
+                  id="email"
+                  name="email"
+                  type="email"
+                  label="Email"
+                  placeholder="Eg. google@gmail.com"
+                  secret
+                />
+              </div>
+              <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
+                <Field
+                  id="website"
+                  name="website"
+                  type="url"
+                  label="Website"
+                  placeholder="Eg. https://www.google.com"
+                />
+                <Field
+                  component={Select}
+                  id="color"
+                  name="color"
+                  label="Brand color"
+                  options={BRAND_COLOR_OPTIONS_WITH_BALL}
+                  defaultOption={BRAND_COLOR_OPTIONS_WITH_BALL[0]}
+                />
+              </div>
               {/* <Field component={FileInput} id="logo" name="logo" label="Logo" accept="image/*" /> */}
               <Field
                 component={Textarea}
@@ -127,40 +148,16 @@ export default function Post() {
                 label="Number of posts"
                 defaultValue={[postCount]}
                 min={1}
-                max={50}
+                max={10}
                 onChange={setPostCount}
               />
-            </div>
-
-            <div className="flex flex-row items-center justify-center gap-2">
-              <Button
-                type="button"
-                onClick={function () {
-                  setStep(1);
-                }}
-              >
-                Continue
-              </Button>
             </div>
           </section>
 
           <section
-            className={[
-              "w-[min(720px,_100%)] mx-auto flex flex-col items-stretch justify-start gap-6",
-              step !== 1 ? "hidden" : "",
-            ].join(" ")}
+            id="section-posts"
+            className="w-[min(720px,_100%)] mx-auto flex flex-col items-stretch justify-start gap-6"
           >
-            <div className="flex flex-row items-center justify-start gap-2">
-              <Button
-                type="button"
-                onClick={function () {
-                  setStep(0);
-                }}
-                ghost
-              >
-                Back
-              </Button>
-            </div>
             <h2 className="font-medium text-2xl">Fill posts</h2>
 
             <div className="flex flex-col items-stretch justify-start gap-0 divide-y divide-dashed divide-neutral-800">
@@ -173,27 +170,21 @@ export default function Post() {
                     <div className="flex flex-row items-start justify-start flex-wrap gap-6">
                       <h3 className="font-medium text-xl">#{i + 1}</h3>
                       <div className="flex-1 flex flex-col items-stretch justify-start gap-6">
-                        <Field
-                          id={`posts[${i}].title`}
-                          name={`posts[${i}].title`}
-                          type="text"
-                          label="Title"
-                          placeholder="Eg. Android Developer"
-                        />
                         <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
                           <Field
-                            id={`posts[${i}].type`}
-                            name={`posts[${i}].type`}
+                            id={`posts[${i}].title`}
+                            name={`posts[${i}].title`}
                             type="text"
-                            label="Type"
-                            placeholder="Eg. Internship, Full time"
+                            label="Title"
+                            placeholder="Eg. Android Developer"
                           />
                           <Field
-                            id={`posts[${i}].department`}
-                            name={`posts[${i}].department`}
-                            type="text"
-                            label="Department"
-                            placeholder="Eg. Mobile Developer"
+                            component={Select}
+                            id={`posts[${i}].type`}
+                            name={`posts[${i}].type`}
+                            label="Type"
+                            options={JOB_TYPES}
+                            defaultOption={JOB_TYPES[0]}
                           />
                         </div>
                         <Field
@@ -237,7 +228,7 @@ export default function Post() {
                               name={`posts[${i}].applyLink`}
                               type="url"
                               label="Link"
-                              placeholder="Eg. Web Developer"
+                              placeholder="Eg. https://careers.google.com"
                               optional
                             />
                             <Field
@@ -265,11 +256,71 @@ export default function Post() {
                           label="Tags (Comma separated)"
                           placeholder="Eg. flutter, android, anything"
                         />
+                        <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
+                          <Field
+                            component={Select}
+                            id={`posts[${i}].branded`}
+                            name={`posts[${i}].branded`}
+                            label="Expires after"
+                            options={JOB_EXPIRE_OPTIONS}
+                            defaultOption={JOB_EXPIRE_OPTIONS[0]}
+                          />
+                          <Field
+                            component={Switch}
+                            id={`posts[${i}].branded`}
+                            name={`posts[${i}].branded`}
+                            label="Show branded"
+                          />
+                        </div>
                       </div>
                     </div>
                   </article>
                 );
               })}
+            </div>
+
+            <h2 className="font-medium text-2xl">Invoice</h2>
+            <div className="flex flex-col items-stretch justify-start divide-y divide-dashed divide-neutral-800">
+              <ul className="flex flex-row items-stretch justify-start divide-x divide-dashed divide-neutral-800">
+                <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                  Item
+                </li>
+                <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                  Price
+                </li>
+                <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                  Quantity
+                </li>
+                <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                  Total
+                </li>
+              </ul>
+              <div className="flex flex-col items-stretch justify-start divide-y divide-dashed divide-neutral-800">
+                <ul className="flex flex-row items-stretch justify-center divide-x divide-dashed divide-neutral-800">
+                  <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                    Post
+                  </li>
+                  <li className="px-2 py-1 flex-1">$1</li>
+                  <li className="px-2 py-1 flex-1">{postCount}</li>
+                  <li className="px-2 py-1 flex-1">${postCount}</li>
+                </ul>
+                <ul className="flex flex-row items-stretch justify-center divide-x divide-dashed divide-neutral-800">
+                  <li className="px-2 py-1 flex-1 font-medium bg-white/5">
+                    Branded
+                  </li>
+                  <li className="px-2 py-1 flex-1">$1</li>
+                  <li className="px-2 py-1 flex-1">2</li>
+                  <li className="px-2 py-1 flex-1">$2</li>
+                </ul>
+                <ul className="flex flex-row items-stretch justify-center">
+                  <li className="px-2 py-1 flex-1" />
+                  <li className="px-2 py-1 flex-1" />
+                  <li className="px-2 py-1 flex-1" />
+                  <li className="px-2 py-1 flex-1 font-bold text-lg text-green-200">
+                    $5
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="flex flex-row items-center justify-center gap-2">
