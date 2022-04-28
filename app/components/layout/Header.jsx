@@ -5,6 +5,10 @@ import Button from "../ui/Button";
 
 import Container from "./Container";
 
+import Heart from "./../icons/Heart";
+import Scale from "./../icons/Scale";
+import Code from "../icons/Code";
+
 export default function Header({ showPitch = false, posting = false }) {
   return (
     <div className="border-b border-neutral-800/50 bg-white/5 py-4 flex flex-col items-stretch justify-start gap-8">
@@ -33,7 +37,7 @@ export default function Header({ showPitch = false, posting = false }) {
               </Button>
             ) : (
               <Button as={Link} to="/post">
-                Post a job (50% off)
+                Post a job
               </Button>
             )}
           </li>
@@ -51,7 +55,7 @@ export default function Header({ showPitch = false, posting = false }) {
             <p className="text-neutral-400">—</p>
             <p className="font-medium text-sm text-pink-200">Beautiful</p>
           </div>
-          <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
+          <div className="flex flex-row items-end justify-between flex-wrap gap-4">
             <div className="w-[48ch] flex flex-col items-stretch justify-start gap-1">
               <h2 className="font-bold text-2xl bg-clip-text bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 text-transparent">
                 The only job board you will ever need.
@@ -60,6 +64,21 @@ export default function Header({ showPitch = false, posting = false }) {
                 We studied hundreds of employment websites to create an amazing
                 experience for both job seekers & employers.
               </p>
+            </div>
+            <div className="flex flex-col items-stretch justify-start gap-1">
+              <p className="font-medium text-xs uppercase text-neutral-400">Features</p>
+              <div className="flex flex-row items-center justify-start gap-2">
+                <Heart size={18} className="text-rose-400" />
+                <p className="text-sm">Unlimited free posts</p>
+              </div>
+              <div className="flex flex-row items-center justify-start gap-2">
+                <Scale size={18} className="text-teal-400" />
+                <p className="text-sm">Affordable promotion</p>
+              </div>
+              <div className="flex flex-row items-center justify-start gap-2">
+                <Code size={18} className="text-indigo-400" />
+                <p className="text-sm">Open source</p>
+              </div>
             </div>
           </div>
         </Container>

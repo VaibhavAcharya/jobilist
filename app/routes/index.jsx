@@ -79,7 +79,7 @@ export default function Index() {
                 <div className="flex flex-col items-center justify-center gap-0">
                   <Dollar size={24} />
                   <p className="font-medium text-lg px-4 py-2 text-center text-green-200">
-                    Pre-booking will save you up to 50%
+                    Pre-booking will save you up to 50% on promotion
                   </p>
                 </div>
                 <Button as={Link} to="/post" ghost>
