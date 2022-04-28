@@ -1,5 +1,11 @@
 import { useEffect, useRef, Fragment } from "react";
-import { Form, Link, useActionData, useTransition } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react";
 
 import Button from "../components/ui/Button";
 import Field from "../components/ui/Field";
@@ -15,6 +21,17 @@ import Dollar from "../components/icons/Dollar";
 
 import { string } from "yup";
 
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+
+  const afterPostSuccess = searchParams.get("success") === "true";
+
+  return {
+    afterPostSuccess,
+  };
+}
+
 export async function action({ request }) {
   const formData = await request.formData();
 
@@ -26,29 +43,32 @@ export async function action({ request }) {
   if (isEmailValid) {
     return { ok: true };
   } else {
-    errors.email = "Email not valid!";
+    errors.email = "Please fill a valid email!";
   }
 
   return { errors };
 }
 
 export default function Index() {
-  const data = useActionData();
+  const loaderData = useLoaderData();
+  const afterPostSuccess = loaderData.afterPostSuccess;
+
+  const actionData = useActionData();
   const transition = useTransition();
   const emailFormRef = useRef();
 
   useEffect(
     function () {
-      if (data?.ok) {
+      if (actionData?.ok) {
         emailFormRef.current.reset();
       }
     },
-    [data]
+    [actionData]
   );
 
   return (
     <Page>
-      <Header showPitch />
+      <Header showPitch afterPostSuccess={afterPostSuccess} />
 
       <Main className="flex flex-col items-stretch justify-start gap-8">
         {/* <form className="flex flex-col items-stretch justify-start gap-2">
@@ -94,7 +114,7 @@ export default function Index() {
                     Be the first to know when we launch
                   </p>
                 </div>
-                {data?.ok ? (
+                {actionData?.ok ? (
                   <p className="text-center font-medium text-sm text-green-400">
                     Notification scheduled successfully!
                   </p>
@@ -108,7 +128,7 @@ export default function Index() {
                         label="Email"
                         placeholder="Eg. john@gmail.com"
                         disabled={transition.state === "submitting"}
-                        error={data?.errors?.email}
+                        error={actionData?.errors?.email}
                       />
                     </div>
                     <div className="flex flex-row items-stretch justify-center gap-2">

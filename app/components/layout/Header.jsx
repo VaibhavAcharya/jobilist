@@ -8,10 +8,26 @@ import Container from "./Container";
 import Heart from "./../icons/Heart";
 import Scale from "./../icons/Scale";
 import Code from "../icons/Code";
+import Cake from "../icons/Cake";
 
-export default function Header({ showPitch = false, posting = false }) {
+export default function Header({
+  showPitch = false,
+  posting = false,
+  afterPostSuccess = false,
+}) {
   return (
     <div className="border-b border-neutral-800/50 bg-white/5 py-4 flex flex-col items-stretch justify-start gap-8">
+      {afterPostSuccess ? (
+        <Container className="flex flex-row items-stretch justify-start">
+          <div className="flex-1 flex flex-row items-center justify-center gap-2 bg-green-500/20 p-2 rounded-md">
+            <Cake />
+            <p className="font-medium text-sm">
+              Congratulations! Your posts are live now.
+            </p>
+          </div>
+        </Container>
+      ) : null}
+
       <Container
         as="nav"
         className="flex flex-row items-center justify-between gap-4"
