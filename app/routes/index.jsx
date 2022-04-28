@@ -1,4 +1,5 @@
-import { Form, Link } from "@remix-run/react";
+import { useEffect, useRef, Fragment } from "react";
+import { Form, Link, useActionData, useTransition } from "@remix-run/react";
 
 import Button from "../components/ui/Button";
 import Field from "../components/ui/Field";
@@ -6,13 +7,45 @@ import Field from "../components/ui/Field";
 import Page from "../components/layout/Page";
 import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
+import Footer from "../components/layout/Footer";
 
 import Speakerphone from "../components/icons/Speakerphone";
 import Bell from "../components/icons/Bell";
 import Dollar from "../components/icons/Dollar";
-import Footer from "../components/layout/Footer";
+
+import { string } from "yup";
+
+export async function action({ request }) {
+  const formData = await request.formData();
+
+  const email = formData.get("email");
+
+  const errors = {};
+
+  const isEmailValid = await string().email().required().isValid(email);
+  if (isEmailValid) {
+    return { ok: true };
+  } else {
+    errors.email = "Email not valid!";
+  }
+
+  return { errors };
+}
 
 export default function Index() {
+  const data = useActionData();
+  const transition = useTransition();
+  const emailFormRef = useRef();
+
+  useEffect(
+    function () {
+      if (data?.ok) {
+        emailFormRef.current.reset();
+      }
+    },
+    [data]
+  );
+
   return (
     <Page>
       <Header showPitch />
@@ -51,6 +84,7 @@ export default function Index() {
                 </h2>
               </div>
               <Form
+                ref={emailFormRef}
                 method="post"
                 className="py-8 px-4 flex flex-col items-stretch justify-start gap-4 bg-pink-800/5"
               >
@@ -60,20 +94,34 @@ export default function Index() {
                     Be the first to know when we launch
                   </p>
                 </div>
-                <div className="mx-auto w-[min(420px,_100%)]">
-                  <Field
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email"
-                    placeholder="Eg. john@gmail.com"
-                  />
-                </div>
-                <div className="flex flex-row items-stretch justify-center gap-2">
-                  <Button type="submit" ghost>
-                    Notify me
-                  </Button>
-                </div>
+                {data?.ok ? (
+                  <p className="text-center font-medium text-sm text-green-400">
+                    Notification scheduled successfully!
+                  </p>
+                ) : (
+                  <Fragment>
+                    <div className="mx-auto w-[min(420px,_100%)]">
+                      <Field
+                        id="email"
+                        name="email"
+                        type="email"
+                        label="Email"
+                        placeholder="Eg. john@gmail.com"
+                        disabled={transition.state === "submitting"}
+                        error={data?.errors?.email}
+                      />
+                    </div>
+                    <div className="flex flex-row items-stretch justify-center gap-2">
+                      <Button
+                        type="submit"
+                        ghost
+                        disabled={transition.state === "submitting"}
+                      >
+                        Notify me
+                      </Button>
+                    </div>
+                  </Fragment>
+                )}
               </Form>
               <div className="py-8 px-4 flex flex-col items-center justify-start gap-4 bg-green-800/5">
                 <div className="flex flex-col items-center justify-center gap-0">

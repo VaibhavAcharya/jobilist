@@ -13,24 +13,24 @@ export default function _Switch({
   const [enabled, setEnabled] = useState(defaultEnabled);
 
   return (
-      <Switch
-        name={name}
-        checked={enabled}
-        onChange={setEnabled}
+    <Switch
+      name={name}
+      checked={enabled}
+      onChange={setEnabled}
+      className={[
+        "relative flex flex-row items-center px-2 py-1 rounded-md w-14 bg-neutral-900 border border-neutral-800 hover:border-neutral-700",
+        enabled ? "justify-end" : "justify-start",
+        FOCUS_STYLES,
+        DISABLED_STYLES,
+      ].join(" ")}
+      {...otherProps}
+    >
+      <span
         className={[
-          "relative flex flex-row items-center px-2 py-1 rounded-md w-14 bg-neutral-900 border border-neutral-800 hover:border-neutral-700",
-          enabled ? "justify-end" : "justify-start",
-          FOCUS_STYLES,
-          DISABLED_STYLES,
+          "w-1/2 h-5 rounded-md",
+          enabled ? "bg-blue-500" : "bg-white",
         ].join(" ")}
-        {...otherProps}
-      >
-        <span
-          className={[
-            "w-1/2 h-5 rounded-md",
-            enabled ? "bg-blue-500" : "bg-white",
-          ].join(" ")}
-        />
-      </Switch>
+      />
+    </Switch>
   );
 }

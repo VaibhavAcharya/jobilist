@@ -66,7 +66,9 @@ export default function Header({ showPitch = false, posting = false }) {
               </p>
             </div>
             <div className="flex flex-col items-stretch justify-start gap-1">
-              <p className="font-medium text-xs uppercase text-neutral-400">Features</p>
+              <p className="font-medium text-xs uppercase text-neutral-400">
+                Features
+              </p>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
                 <p className="text-sm">Unlimited free posts</p>

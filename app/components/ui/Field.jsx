@@ -8,6 +8,7 @@ export default function Field({
   label,
   optional = false,
   secret = false,
+  error,
   children,
   ...otherProps
 }) {
@@ -27,6 +28,10 @@ export default function Field({
       </label>
 
       <Component id={id} {...otherProps} />
+
+      {error ? (
+        <p className="text-xs text-red-400 font-medium">{error}</p>
+      ) : null}
 
       {children}
     </div>

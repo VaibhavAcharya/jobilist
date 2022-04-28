@@ -10,11 +10,19 @@ export default function Footer() {
       >
         <p className="text-sm text-center text-neutral-400">
           Build by{" "}
-          <Anchor href="https://twitter.com/VaibhavAcharya_" target="_blank" rel="noopener noreferrer">
+          <Anchor
+            href="https://twitter.com/VaibhavAcharya_"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Vaibhav Acharya
           </Anchor>{" "}
           and{" "}
-          <Anchor href="https://twitter.com/naman404" target="_blank" rel="noopener noreferrer">
+          <Anchor
+            href="https://twitter.com/naman404"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Naman Vyas
           </Anchor>
           .
