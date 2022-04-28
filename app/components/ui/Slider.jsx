@@ -1,8 +1,8 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 import * as Slider from "@radix-ui/react-slider";
 
-import { FOCUS_STYLES } from "../constants";
+import { DISABLED_STYLES, FOCUS_STYLES } from "../constants";
 
 export default function _Slider({
   id,
@@ -16,10 +16,9 @@ export default function _Slider({
   );
 
   return (
-    <Fragment>
-      <input id={id} name={name} type="hidden" value={value} />
-
       <Slider.Root
+      id={id}
+      name={name}
         className={[
           "relative w-full h-8 flex flex-row items-center justify-start touch-none",
           className,
@@ -38,11 +37,11 @@ export default function _Slider({
           className={[
             "h-8 w-8 rounded-md bg-neutral-900 border border-opacity-50 border-neutral-800 hover:border-neutral-700 flex flex-row items-center justify-center font-medium text-sm",
             FOCUS_STYLES,
+            DISABLED_STYLES
           ].join(" ")}
         >
           {value}
         </Slider.Thumb>
       </Slider.Root>
-    </Fragment>
   );
 }

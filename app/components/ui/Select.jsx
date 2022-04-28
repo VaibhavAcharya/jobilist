@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 import { Listbox } from "@headlessui/react";
 
@@ -15,42 +15,35 @@ export default function Select({
   disabled = false,
   ...otherProps
 }) {
-  const [option, setOption] = useState(defaultOption);
+  const [value, setValue] = useState(defaultOption.value);
 
   return (
-    <Fragment>
-      <input
-        id={id}
-        name={name}
-        type="hidden"
-        value={option.value}
-        disabled={disabled}
-        {...otherProps}
-      />
-
       <Listbox
-        value={option}
-        onChange={function (option) {
-          setOption(option);
-          onChange?.(option);
+      id={id}
+        name={name}
+        value={value}
+        type="button"
+        onChange={function (value) {
+          setValue(value);
+          onChange?.(value);
         }}
         disabled={disabled}
+        {...otherProps}
       >
         <div className="flex-1 relative">
           <Listbox.Button
             as={Button}
-            type="button"
             className="relative whitespace-nowrap w-full flex flex-row items-center justify-between gap-2"
             ghost
           >
-            <span>{option.label}</span>
+            <span>{options.find(function (_option) { return _option.value === value })?.label}</span>
             <Selector size={16} />
           </Listbox.Button>
           <Listbox.Options className="whitespace-nowrap absolute z-10 w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-md divide-y divide-dashed divide-neutral-800 focus:outline-none">
             {options.map(function (_option) {
               return (
                 <Listbox.Option
-                  value={_option}
+                  value={_option.value}
                   className={function ({ active, selected }) {
                     return [
                       "relative w-full px-3 py-1 font-medium text-sm rounded-md",
@@ -67,6 +60,5 @@ export default function Select({
           </Listbox.Options>
         </div>
       </Listbox>
-    </Fragment>
   );
 }
