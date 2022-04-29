@@ -1,4 +1,10 @@
-export const JOB_TYPES = [
+export function getValuesFromOptions(options) {
+  return options.map(function (option) {
+    return option.value;
+  })
+}
+
+export const JOB_TYPES_OPTIONS = [
   {
     value: "full",
     label: "Full-time",
@@ -24,6 +30,7 @@ export const JOB_TYPES = [
     label: "Other",
   },
 ];
+export const JOB_TYPES_OPTION_VALUES = getValuesFromOptions(JOB_TYPES_OPTIONS)
 
 export const BRAND_COLOR_OPTIONS = [
   {
@@ -135,6 +142,7 @@ export const BRAND_COLOR_OPTIONS = [
     ballBG: "bg-rose-500",
   },
 ];
+export const BRAND_COLOR_OPTION_VALUES = getValuesFromOptions(BRAND_COLOR_OPTIONS)
 
 export const JOB_EXPIRE_OPTIONS = [
   {
@@ -153,6 +161,7 @@ export const JOB_EXPIRE_OPTIONS = [
     price: 2,
   },
 ];
+export const JOB_EXPIRE_OPTION_VALUES = getValuesFromOptions(JOB_EXPIRE_OPTIONS)
 
 export const JOB_PIN_OPTIONS = [
   {

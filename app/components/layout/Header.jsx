@@ -62,7 +62,7 @@ export default function Header({
       {showPitch ? (
         <Container
           as="header"
-          className="flex flex-col items-stretch justify-start gap-2"
+          className="flex flex-col items-stretch justify-start gap-1"
         >
           <div className="flex flex-row items-center justify-start gap-2">
             <p className="font-medium text-sm text-yellow-200">Lively</p>
@@ -91,7 +91,7 @@ export default function Header({
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
-                <p className="text-sm">Affordable promotion</p>
+                <p className="text-sm">Fair promotion pricing</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />

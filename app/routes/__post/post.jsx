@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { json } from "@remix-run/node";
-import { Form, Link, useActionData } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 
 import Button from "../../components/ui/Button";
 import Field from "./../../components/ui/Field";
@@ -14,59 +14,75 @@ import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
 import Select from "../../components/ui/Select";
 import Switch from "../../components/ui/Switch";
-import { addColorBallToOptions } from "../../components/ui/ColorBall";
+import { addColorBoxToOptions } from "../../components/ui/ColorBox";
 
 import {
   BRAND_COLOR_OPTIONS,
   JOB_EXPIRE_OPTIONS,
   JOB_PIN_OPTIONS,
-  JOB_TYPES,
+  JOB_TYPES_OPTIONS,
 } from "../../constants";
+import { batchSchema, getValidationErrors, postSchema } from "../../helpers/validation";
 const BRAND_COLOR_OPTIONS_WITH_BALL =
-  addColorBallToOptions(BRAND_COLOR_OPTIONS);
+  addColorBoxToOptions(BRAND_COLOR_OPTIONS);
 
 export async function action({ request }) {
   const formData = await request.formData();
 
-  const data = {};
+  let errors = {};
 
-  for (const [key, value] of formData) {
-    data[key] = value;
+  const batch = {
+    email: formData.get("email"),
+    website: formData.get("website"),
+    name: formData.get("name"),
+    description: formData.get("description"),
+    logoURL: formData.get("logoURL"),
+    color: formData.get("color"),
+    expiresAfter: formData.get("expiresAfter"),
   }
 
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const website = formData.get("website");
-  const description = formData.get("description");
+  const postCount = parseInt(formData.get("postCount")) || 0;
 
-  const postCount = formData.get("postCount");
+  errors = await getValidationErrors(batchSchema, {
+    ...batch,
+    postCount
+  })
+
   let posts = [];
-
   for (let i = 0; i < postCount; i++) {
     const post = {
       title: formData.get(`posts[${i}].title`),
       type: formData.get(`posts[${i}].type`),
-      department: formData.get(`posts[${i}].department`),
       location: formData.get(`posts[${i}].location`),
-      salaryStart: Number(formData.get(`posts[${i}].salaryStart`)),
-      salaryEnd: Number(formData.get(`posts[${i}].salaryEnd`)),
+      salaryStart: parseInt(formData.get(`posts[${i}].salaryStart`)) || undefined,
+      salaryEnd: parseInt(formData.get(`posts[${i}].salaryEnd`)) || undefined,
       applyLink: formData.get(`posts[${i}].applyLink`),
       applyEmail: formData.get(`posts[${i}].applyEmail`),
       description: formData.get(`posts[${i}].description`),
-      tags: formData
-        .get(`posts[${i}].tags`)
+      tags: (formData
+        .get(`posts[${i}].tags`) || null)
         ?.split(",")
         .map(function (tag) {
           return tag.trim();
-        }),
+        }) ?? [],
     };
 
-    console.log(post);
+    const errorsInPost = await getValidationErrors(postSchema, post);
+
+    for (const key in errorsInPost) {
+      errors[`posts[${i}].${key}`] = errorsInPost[key];
+    }
 
     posts.push(post);
   }
 
-  return json({ posts });
+  if (Object.keys(errors).length) {
+    return {
+      errors
+    }
+  }
+
+  return { ok: true };
 }
 
 export default function Post() {
@@ -104,6 +120,7 @@ export default function Post() {
                   type="text"
                   label="Name"
                   placeholder="Eg. Google"
+                  error={data?.errors?.name}
                 />
                 <Field
                   id="email"
@@ -112,6 +129,7 @@ export default function Post() {
                   label="Email"
                   placeholder="Eg. google@gmail.com"
                   secret
+                  error={data?.errors?.email}
                 />
               </div>
               <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
@@ -121,6 +139,7 @@ export default function Post() {
                   type="url"
                   label="Website"
                   placeholder="Eg. https://www.google.com"
+                  error={data?.errors?.website}
                 />
                 <Field
                   component={Select}
@@ -129,6 +148,7 @@ export default function Post() {
                   label="Brand color"
                   options={BRAND_COLOR_OPTIONS_WITH_BALL}
                   defaultOption={BRAND_COLOR_OPTIONS_WITH_BALL[0]}
+                  error={data?.errors?.color}
                 />
               </div>
               {/* <Field component={FileInput} id="logo" name="logo" label="Logo" accept="image/*" /> */}
@@ -140,19 +160,30 @@ export default function Post() {
                 placeholder="Describe what your organization does here..."
                 rows="5"
                 optional
+                error={data?.errors?.description}
               />
 
               <Field
                 component={Slider}
                 id="postCount"
                 name="postCount"
-                type="hidden"
                 label="Number of posts"
                 defaultValue={[postCount]}
                 min={1}
                 max={10}
                 onChange={setPostCount}
+                error={data?.errors?.postCount}
               />
+
+<Field
+                            component={Select}
+                            id="expiresAfter"
+                            name="expiresAfter"
+                            label="Expires after"
+                            options={JOB_EXPIRE_OPTIONS}
+                            defaultOption={JOB_EXPIRE_OPTIONS[1]}
+                            error={data?.errors?.expiresAfter}
+                          />
             </div>
           </section>
 
@@ -175,6 +206,7 @@ export default function Post() {
                         <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
                           <Field
                             id={`posts[${i}].title`}
+                            error={data?.errors?.[`posts[${i}].title`]}
                             name={`posts[${i}].title`}
                             type="text"
                             label="Title"
@@ -183,14 +215,16 @@ export default function Post() {
                           <Field
                             component={Select}
                             id={`posts[${i}].type`}
+                            error={data?.errors?.[`posts[${i}].type`]}
                             name={`posts[${i}].type`}
                             label="Type"
-                            options={JOB_TYPES}
-                            defaultOption={JOB_TYPES[0]}
+                            options={JOB_TYPES_OPTIONS}
+                            defaultOption={JOB_TYPES_OPTIONS[0]}
                           />
                         </div>
                         <Field
                           id={`posts[${i}].location`}
+                          error={data?.errors?.[`posts[${i}].location`]}
                           name={`posts[${i}].location`}
                           type="text"
                           label="Location"
@@ -204,19 +238,19 @@ export default function Post() {
                           <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
                             <Field
                               id={`posts[${i}].salaryStart`}
+                              error={data?.errors?.[`posts[${i}].salaryStart`]}
                               name={`posts[${i}].salaryStart`}
                               type="number"
                               label="Start"
                               placeholder="Eg. 15000"
-                              optional
                             />
                             <Field
                               id={`posts[${i}].salaryEnd`}
+                              error={data?.errors?.[`posts[${i}].salaryEnd`]}
                               name={`posts[${i}].salaryEnd`}
                               type="number"
                               label="End"
                               placeholder="Eg. 17000"
-                              optional
                             />
                           </div>
                         </div>
@@ -227,6 +261,7 @@ export default function Post() {
                           <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
                             <Field
                               id={`posts[${i}].applyLink`}
+                              error={data?.errors?.[`posts[${i}].applyLink`]}
                               name={`posts[${i}].applyLink`}
                               type="url"
                               label="Link"
@@ -235,6 +270,7 @@ export default function Post() {
                             />
                             <Field
                               id={`posts[${i}].applyEmail`}
+                              error={data?.errors?.[`posts[${i}].applyEmail`]}
                               name={`posts[${i}].applyEmail`}
                               type="email"
                               label="Email"
@@ -246,6 +282,7 @@ export default function Post() {
                         <Field
                           component={Textarea}
                           id={`posts[${i}].description`}
+                          error={data?.errors?.[`posts[${i}].description`]}
                           name={`posts[${i}].description`}
                           label="Description"
                           placeholder="Describe the job here; areas of responsibility, typical day of candidate, skills and qualifications required to perform the role."
@@ -254,36 +291,22 @@ export default function Post() {
                         />
                         <Field
                           id={`posts[${i}].tags`}
+                          error={data?.errors?.[`posts[${i}].tags`]}
                           name={`posts[${i}].tags`}
                           type="text"
-                          label="Tags (Comma separated)"
+                          label="Tags (Comma separated, max 6)"
                           placeholder="Eg. flutter, android, anything"
                         />
-                        <div className="flex flex-row items-stretch justify-end flex-wrap gap-4">
+                        {/* <div className="flex flex-row items-stretch justify-end flex-wrap gap-4">
                           <Field
-                            component={Switch}
-                            id={`posts[${i}].branded`}
-                            name={`posts[${i}].branded`}
-                            label="Show branded"
-                          />
-                          {/* <Field
                             component={Select}
                             id={`posts[${i}].pinned`}
                             name={`posts[${i}].pinned`}
                             label="Pin to top"
                             options={JOB_PIN_OPTIONS}
                             defaultOption={JOB_PIN_OPTIONS[0]}
-                          /> */}
-                          <Field
-                            component={Select}
-                            id={`posts[${i}].expiresAfter`}
-                            name={`posts[${i}].expiresAfter`}
-                            label="Expires after"
-                            options={JOB_EXPIRE_OPTIONS}
-                            defaultOption={JOB_EXPIRE_OPTIONS[1]}
-                            disabled
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </article>
