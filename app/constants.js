@@ -1,7 +1,7 @@
 export function getValuesFromOptions(options) {
   return options.map(function (option) {
     return option.value;
-  })
+  });
 }
 
 export const JOB_TYPES_OPTIONS = [
@@ -30,7 +30,7 @@ export const JOB_TYPES_OPTIONS = [
     label: "Other",
   },
 ];
-export const JOB_TYPES_OPTION_VALUES = getValuesFromOptions(JOB_TYPES_OPTIONS)
+export const JOB_TYPES_OPTION_VALUES = getValuesFromOptions(JOB_TYPES_OPTIONS);
 
 export const BRAND_COLOR_OPTIONS = [
   {
@@ -142,26 +142,27 @@ export const BRAND_COLOR_OPTIONS = [
     ballBG: "bg-rose-500",
   },
 ];
-export const BRAND_COLOR_OPTION_VALUES = getValuesFromOptions(BRAND_COLOR_OPTIONS)
+export const BRAND_COLOR_OPTION_VALUES =
+  getValuesFromOptions(BRAND_COLOR_OPTIONS);
 
 export const JOB_EXPIRE_OPTIONS = [
   {
     value: "7",
     label: "1 week",
-    price: 0,
   },
   {
     value: "15",
     label: "15 days",
-    price: 1,
+    price: "price_1Ku96ISDrDyjk9LfmePNc4Gi",
   },
   {
     value: "31",
     label: "1 month",
-    price: 2,
+    price: "price_1Ku96JSDrDyjk9Lfq3T8JZ9A",
   },
 ];
-export const JOB_EXPIRE_OPTION_VALUES = getValuesFromOptions(JOB_EXPIRE_OPTIONS)
+export const JOB_EXPIRE_OPTION_VALUES =
+  getValuesFromOptions(JOB_EXPIRE_OPTIONS);
 
 export const JOB_PIN_OPTIONS = [
   {

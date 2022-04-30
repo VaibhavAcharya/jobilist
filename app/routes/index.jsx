@@ -21,6 +21,8 @@ import Dollar from "../components/icons/Dollar";
 
 import { string } from "yup";
 
+import { addEmail } from "../../utils/posts.server";
+
 export async function loader({ request }) {
   const url = new URL(request.url);
   const searchParams = url.searchParams;
@@ -41,7 +43,11 @@ export async function action({ request }) {
 
   const isEmailValid = await string().email().required().isValid(email);
   if (isEmailValid) {
-    return { ok: true };
+    const user = await addEmail(email);
+    if (user) {
+      return { ok: true };
+    }
+    return null;
   } else {
     errors.email = "Please fill a valid email!";
   }

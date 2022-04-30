@@ -1,30 +1,62 @@
 import { useEffect, useState } from "react";
 
-import { json } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 
 import Button from "../../components/ui/Button";
 import Field from "./../../components/ui/Field";
 import Textarea from "../../components/ui/Textarea";
-import FileInput from "../../components/ui/FileInput";
 import Slider from "../../components/ui/Slider";
 
 import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
 import Select from "../../components/ui/Select";
-import Switch from "../../components/ui/Switch";
 import { addColorBoxToOptions } from "../../components/ui/ColorBox";
 
 import {
   BRAND_COLOR_OPTIONS,
   JOB_EXPIRE_OPTIONS,
-  JOB_PIN_OPTIONS,
   JOB_TYPES_OPTIONS,
 } from "../../constants";
-import { batchSchema, getValidationErrors, postSchema } from "../../helpers/validation";
-const BRAND_COLOR_OPTIONS_WITH_BALL =
-  addColorBoxToOptions(BRAND_COLOR_OPTIONS);
+
+import {
+  batchSchema,
+  getValidationErrors,
+  postSchema,
+} from "../../helpers/validation";
+
+import { activeBatch, addBatch } from "../../../utils/posts.server";
+import {
+  addTransaction,
+  checkTransaction,
+  createPaymentUrl,
+  paymentStatus,
+} from "../../../utils/payment.server";
+
+const BRAND_COLOR_OPTIONS_WITH_BALL = addColorBoxToOptions(BRAND_COLOR_OPTIONS);
+
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const transactionId = url.searchParams.get("transactionId");
+
+  if (transactionId) {
+    const transactionExists = await checkTransaction(transactionId);
+    if (transactionExists) return null;
+
+    const payStatus = await paymentStatus(transactionId);
+    if (payStatus.status === "paid") {
+      const activateBatch = await activeBatch(payStatus.data.postId);
+      addTransaction(transactionId);
+
+      if (activateBatch) {
+        return redirect("/?success=true");
+      }
+    }
+    return null;
+  }
+  return null;
+}
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -39,14 +71,14 @@ export async function action({ request }) {
     logoURL: formData.get("logoURL"),
     color: formData.get("color"),
     expiresAfter: formData.get("expiresAfter"),
-  }
+  };
 
   const postCount = parseInt(formData.get("postCount")) || 0;
 
   errors = await getValidationErrors(batchSchema, {
     ...batch,
-    postCount
-  })
+    postCount,
+  });
 
   let posts = [];
   for (let i = 0; i < postCount; i++) {
@@ -54,17 +86,18 @@ export async function action({ request }) {
       title: formData.get(`posts[${i}].title`),
       type: formData.get(`posts[${i}].type`),
       location: formData.get(`posts[${i}].location`),
-      salaryStart: parseInt(formData.get(`posts[${i}].salaryStart`)) || undefined,
+      salaryStart:
+        parseInt(formData.get(`posts[${i}].salaryStart`)) || undefined,
       salaryEnd: parseInt(formData.get(`posts[${i}].salaryEnd`)) || undefined,
       applyLink: formData.get(`posts[${i}].applyLink`),
       applyEmail: formData.get(`posts[${i}].applyEmail`),
       description: formData.get(`posts[${i}].description`),
-      tags: (formData
-        .get(`posts[${i}].tags`) || null)
-        ?.split(",")
-        .map(function (tag) {
-          return tag.trim();
-        }) ?? [],
+      tags:
+        (formData.get(`posts[${i}].tags`) || null)
+          ?.split(",")
+          .map(function (tag) {
+            return tag.trim();
+          }) ?? [],
     };
 
     const errorsInPost = await getValidationErrors(postSchema, post);
@@ -78,11 +111,30 @@ export async function action({ request }) {
 
   if (Object.keys(errors).length) {
     return {
-      errors
-    }
+      errors,
+    };
   }
 
-  return { ok: true };
+  const addedBatch = await addBatch(batch, posts);
+  if (addedBatch) {
+    const expiresAtId = JOB_EXPIRE_OPTIONS.find(
+      (e) => e.value === batch.expiresAfter
+    );
+    if (addedBatch.isActive === false) {
+      const paymentUrl = await createPaymentUrl(
+        addedBatch?.id,
+        addedBatch?.color,
+        expiresAtId?.price
+      );
+
+      if (paymentUrl) {
+        return redirect(paymentUrl);
+      }
+    }
+    return redirect("/?success=true");
+  }
+
+  return null;
 }
 
 export default function Post() {
@@ -175,15 +227,15 @@ export default function Post() {
                 error={data?.errors?.postCount}
               />
 
-<Field
-                            component={Select}
-                            id="expiresAfter"
-                            name="expiresAfter"
-                            label="Expires after"
-                            options={JOB_EXPIRE_OPTIONS}
-                            defaultOption={JOB_EXPIRE_OPTIONS[1]}
-                            error={data?.errors?.expiresAfter}
-                          />
+              <Field
+                component={Select}
+                id="expiresAfter"
+                name="expiresAfter"
+                label="Expires after"
+                options={JOB_EXPIRE_OPTIONS}
+                defaultOption={JOB_EXPIRE_OPTIONS[1]}
+                error={data?.errors?.expiresAfter}
+              />
             </div>
           </section>
 

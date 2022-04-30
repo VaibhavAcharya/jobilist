@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Batch {
+  id String @id @default(uuid())
+
+  email   String
+  website String
+
+  name        String
+  description String?
+
+  logoURL String?
+  color   String?
+
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  isActive Boolean @default(true)
+
+  posts Post[]
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  title    String
+  type     String
+  location String
+
+  salaryStart Decimal
+  salaryEnd   Decimal
+
+  applyLink  String?
+  applyEmail String?
+
+  description String?
+  tags        String[]
+
+  pinExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  batchID String
+  Batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model TransactionId {
+  id        String   @id
+  createdAt DateTime @default(now())
+}
+
+model userEmail {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+}
