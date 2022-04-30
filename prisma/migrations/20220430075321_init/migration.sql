@@ -33,14 +33,6 @@ CREATE TABLE "Post" (
 );
 
 -- CreateTable
-CREATE TABLE "TransactionId" (
-    "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "TransactionId_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "userEmail" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

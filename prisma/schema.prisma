@@ -23,8 +23,6 @@ model Batch {
 
   createdAt DateTime @default(now())
 
-  isActive Boolean @default(true)
-
   posts Post[]
 }
 
@@ -50,11 +48,6 @@ model Post {
 
   batchID String
   Batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
-}
-
-model TransactionId {
-  id        String   @id
-  createdAt DateTime @default(now())
 }
 
 model userEmail {

@@ -3,18 +3,9 @@ import { db } from "./db.server.js";
 
 export async function addBatch(batch, posts) {
   var expiresAt = new Date();
-  const { expiresAfter, color } = batch;
+  const { expiresAfter } = batch;
   expiresAt.setDate(expiresAt.getDate() + expiresAfter);
   batch.expiresAt = expiresAt.toISOString();
-
-  if (
-    JOB_EXPIRE_OPTIONS.find(function (option) {
-      return option.value === expiresAfter;
-    })?.price ||
-    color !== "default"
-  ) {
-    batch.isActive = false;
-  }
 
   const data = {
     ...{
@@ -31,19 +22,6 @@ export async function addBatch(batch, posts) {
   }
 
   return null;
-}
-
-export async function activeBatch(id) {
-  const batch = await db.batch.update({
-    where: {
-      id: id,
-    },
-    data: {
-      isActive: true,
-    },
-  });
-
-  return batch;
 }
 
 export async function addEmail(email) {

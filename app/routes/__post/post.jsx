@@ -26,37 +26,9 @@ import {
   postSchema,
 } from "../../helpers/validation";
 
-import { activeBatch, addBatch } from "../../../utils/posts.server";
-import {
-  addTransaction,
-  checkTransaction,
-  createPaymentUrl,
-  paymentStatus,
-} from "../../../utils/payment.server";
+import { addBatch } from "../../../utils/posts.server";
 
 const BRAND_COLOR_OPTIONS_WITH_BALL = addColorBoxToOptions(BRAND_COLOR_OPTIONS);
-
-export async function loader({ request }) {
-  const url = new URL(request.url);
-  const transactionId = url.searchParams.get("transactionId");
-
-  if (transactionId) {
-    const transactionExists = await checkTransaction(transactionId);
-    if (transactionExists) return null;
-
-    const payStatus = await paymentStatus(transactionId);
-    if (payStatus.status === "paid") {
-      const activateBatch = await activeBatch(payStatus.data.postId);
-      addTransaction(transactionId);
-
-      if (activateBatch) {
-        return redirect("/?success=true");
-      }
-    }
-    return null;
-  }
-  return null;
-}
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -117,20 +89,6 @@ export async function action({ request }) {
 
   const addedBatch = await addBatch(batch, posts);
   if (addedBatch) {
-    const expiresAtId = JOB_EXPIRE_OPTIONS.find(
-      (e) => e.value === batch.expiresAfter
-    );
-    if (addedBatch.isActive === false) {
-      const paymentUrl = await createPaymentUrl(
-        addedBatch?.id,
-        addedBatch?.color,
-        expiresAtId?.price
-      );
-
-      if (paymentUrl) {
-        return redirect(paymentUrl);
-      }
-    }
     return redirect("/?success=true");
   }
 
