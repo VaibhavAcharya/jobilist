@@ -104,6 +104,9 @@ export default function Header({
               </div>
             </div>
           </div>
+          <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
+            <a href="https://www.buymeacoffee.com/jobilist" target="_blank" rel="noopener noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width={128} height={72} /></a>
+          </div>
         </Container>
       ) : null}
     </div>

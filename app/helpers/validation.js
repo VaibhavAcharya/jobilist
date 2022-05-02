@@ -44,7 +44,7 @@ export const batchSchema = object({
     .required(ERROR_MESSAGES.required),
   website: string()
     .typeError(ERROR_MESSAGES.type)
-    .url(ERROR_MESSAGES.url)
+    // .url(ERROR_MESSAGES.url)
     .required(ERROR_MESSAGES.required),
 
   name: string()
@@ -54,7 +54,7 @@ export const batchSchema = object({
 
   logoURL: string()
     .typeError(ERROR_MESSAGES.type)
-    .url(ERROR_MESSAGES.url)
+    // .url(ERROR_MESSAGES.url)
     .nullable(),
   color: string()
     .typeError(ERROR_MESSAGES.type)
@@ -102,7 +102,7 @@ export const postSchema = object({
 
   applyLink: string()
     .typeError(ERROR_MESSAGES.type)
-    .url(ERROR_MESSAGES.url)
+    // .url(ERROR_MESSAGES.url)
     .nullable(),
   applyEmail: string()
     .typeError(ERROR_MESSAGES.type)

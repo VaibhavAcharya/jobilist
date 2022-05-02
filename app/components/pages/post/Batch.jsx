@@ -58,14 +58,14 @@ export default function Batch({ errors = {} }) {
           </div>
           <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
             <Field
-              component={FileInput}
-              id="logo"
-              name="logo"
-              label="Logo"
-              accept="image/*"
+              id="logoURL"
+              name="logoURL"
+              type="url"
+              label="Logo URL"
               required={false}
-              disabled
+              placeholder="Eg. https://www.google.com/logo.svg"
               inDevelopment
+              error={errors?.logoURL}
             />
             <Field
               component={Select}

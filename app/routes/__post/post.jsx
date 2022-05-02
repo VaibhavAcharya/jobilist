@@ -103,6 +103,12 @@ export default function Post() {
         >
           <Batch errors={actionData?.errors} />
 
+          {actionData?.errors ? (
+            <p className="text-center text-red-400 text-xs">
+              Please review the errors above.
+            </p>
+          ) : null}
+
           {actionData?.errors?.other ? (
             <p className="text-center text-red-400 text-xs">
               {actionData?.errors?.other}

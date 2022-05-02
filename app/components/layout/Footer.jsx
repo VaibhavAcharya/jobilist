@@ -34,6 +34,22 @@ export default function Footer() {
           </Anchor>
           .
         </p>
+        <div className="hidden" aria-hidden="true">
+          <Anchor
+            href="https://vaibhavacharya.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Vaibhav Acharya
+          </Anchor>
+          <Anchor
+            href="https://www.namanvyas.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Naman Vyas
+          </Anchor>
+        </div>
       </Container>
     </div>
   );
