@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -44,14 +45,6 @@ model Post {
 
   pinExpiresAt DateTime?
 
-  createdAt DateTime @default(now())
-
   batchID String
-  Batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
-}
-
-model userEmail {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  email     String   @unique
+  batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

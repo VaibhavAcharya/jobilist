@@ -9,7 +9,11 @@ export default function Footer() {
         className="flex flex-col items-stretch justify-start gap-2"
       >
         <p className="text-sm text-center">
-        We welcome support inquiries and feedback at <Anchor href="mailto:jobilistcom@gmail.com">jobilistcom@gmail.com</Anchor>.
+          We welcome support inquiries and feedback at{" "}
+          <Anchor href="mailto:jobilistcom@gmail.com">
+            jobilistcom@gmail.com
+          </Anchor>
+          .
         </p>
         <p className="text-xs text-center text-neutral-400">
           Build by{" "}

@@ -43,6 +43,11 @@ export default function Header({
               </Anchor>
             </h1>
           </li>
+          <li>
+            <p className="text-xs text- font-medium bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 px-2 py-1 rounded-full">
+              Beta
+            </p>
+          </li>
         </ul>
 
         <ul className="flex flex-row items-center justify-between gap-2">
@@ -87,7 +92,7 @@ export default function Header({
               </p>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
-                <p className="text-sm">Unlimited free posts</p>
+                <p className="text-sm">Posting is free forever</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />

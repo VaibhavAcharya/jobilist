@@ -1,75 +1,123 @@
-import { useEffect, useRef, Fragment } from "react";
-import {
-  Form,
-  Link,
-  useActionData,
-  useLoaderData,
-  useTransition,
-} from "@remix-run/react";
+import { useEffect, useRef } from "react";
+import { Form, useLoaderData, useTransition } from "@remix-run/react";
+
+import { db } from "../utils/db.server";
 
 import Button from "../components/ui/Button";
 import Field from "../components/ui/Field";
+import { Post, PostCardWrapper } from "../components/ui/Post";
 
 import Page from "../components/layout/Page";
 import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
 import Footer from "../components/layout/Footer";
 
-import Speakerphone from "../components/icons/Speakerphone";
-import Bell from "../components/icons/Bell";
-import Dollar from "../components/icons/Dollar";
-
-import { string } from "yup";
-
-import { addEmail } from "../../utils/posts.server";
-
 export async function loader({ request }) {
   const url = new URL(request.url);
   const searchParams = url.searchParams;
 
   const afterPostSuccess = searchParams.get("success") === "true";
+  const query = searchParams.get("search");
 
-  return {
-    afterPostSuccess,
-  };
-}
+  if (query) {
+    const tokens = query
+      .trim()
+      .split(" ")
+      .map(function (token) {
+        return token.trim();
+      });
+    const tokensStringWithOR = tokens.join(" | ").replace("'", "/'");
 
-export async function action({ request }) {
-  const formData = await request.formData();
+    try {
+      const searchResponse = await db.post.findMany({
+        where: {
+          OR: [
+            { title: { search: tokensStringWithOR } },
+            { type: { search: tokensStringWithOR } },
+            { location: { search: tokensStringWithOR } },
+            { description: { search: tokensStringWithOR } },
+            { tags: { hasSome: tokens } },
+            {
+              batch: {
+                OR: [
+                  {
+                    name: {
+                      search: tokensStringWithOR,
+                    },
+                  },
+                  {
+                    description: {
+                      search: tokensStringWithOR,
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        include: {
+          batch: true,
+        },
+      });
 
-  const email = formData.get("email");
+      return {
+        afterPostSuccess,
+        results: searchResponse,
+      };
+    } catch (error) {
+      console.error(
+        `Error on searching for ${query}!`,
+        error,
+        tokens,
+        tokensStringWithOR
+      );
 
-  const errors = {};
-
-  const isEmailValid = await string().email().required().isValid(email);
-  if (isEmailValid) {
-    const user = await addEmail(email);
-    if (user) {
-      return { ok: true };
+      return {
+        afterPostSuccess,
+        error: "Unexpected error happened on server!",
+      };
     }
-    return null;
   } else {
-    errors.email = "Please fill a valid email!";
-  }
+    try {
+      const latestResponse = await db.post.findMany({
+        orderBy: {
+          batch: {
+            createdAt: "desc",
+          },
+        },
+        include: {
+          batch: true,
+        },
+      });
 
-  return { errors };
+      return {
+        afterPostSuccess,
+        results: latestResponse,
+      };
+    } catch (error) {
+      return {
+        afterPostSuccess,
+        error: "Unexpected error happened on server!",
+      };
+    }
+  }
 }
 
 export default function Index() {
   const loaderData = useLoaderData();
-  const afterPostSuccess = loaderData.afterPostSuccess;
-
-  const actionData = useActionData();
   const transition = useTransition();
-  const emailFormRef = useRef();
+
+  const afterPostSuccess = loaderData?.afterPostSuccess;
+
+  const searchFieldRef = useRef();
 
   useEffect(
     function () {
-      if (actionData?.ok) {
-        emailFormRef.current.reset();
+      if (transition.state === "idle") {
+        searchFieldRef.current?.focus();
       }
     },
-    [actionData]
+    [transition]
   );
 
   return (
@@ -77,7 +125,11 @@ export default function Index() {
       <Header showPitch afterPostSuccess={afterPostSuccess} />
 
       <Main className="flex flex-col items-stretch justify-start gap-8">
-        {/* <form className="flex flex-col items-stretch justify-start gap-2">
+        <Form
+          replace
+          method="GET"
+          className="flex flex-col items-stretch justify-start gap-2"
+        >
           <label
             htmlFor="search"
             className="font-medium text-xs uppercase text-neutral-400"
@@ -85,84 +137,44 @@ export default function Index() {
             Find your dream job now
           </label>
           <div className="flex flex-row items-stretch justify-start gap-2">
-            <Input
+            <Field
+              ref={searchFieldRef}
               id="search"
               className="flex-1"
               type="text"
               name="search"
               placeholder="Eg. Frontend developer, React.js, Tesla, etc."
+              required={false}
               autoComplete="off"
+              disabled={transition.state === "submitting"}
+              autoFocus
             />
-            <Button type="submit" ghost>
+            <Button
+              type="submit"
+              ghost
+              disabled={transition.state === "submitting"}
+            >
               Search
             </Button>
           </div>
-          filters: [location(office location), type(intern, full time, contract, other), experience(years), culture(remote, office)]; sort: [postedAt]
-        </form> */}
+          {/* <div className="flex flex-row items-stretch justify-start flex-wrap gap-2">
+            TODO: filters and sort
+          </div> */}
+        </Form>
 
-        <div className="w-[min(580px,_100%)] mx-auto p-1 rounded-md bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600">
-          <div className="bg-black rounded-md">
-            <div className="bg-white/5 flex flex-col items-stretch justify-start divide-y divide-dashed divide-neutral-800">
-              <div className="py-2 px-4 flex flex-col items-center justify-start gap-1 bg-yellow-800/5">
-                <Speakerphone size={28} />
-                <h2 className="text-center font-bold text-lg text-yellow-200">
-                  Launching soon!
-                </h2>
-              </div>
-              <Form
-                ref={emailFormRef}
-                method="post"
-                className="py-8 px-4 flex flex-col items-stretch justify-start gap-4 bg-pink-800/5"
-              >
-                <div className="flex flex-col items-center justify-center gap-0">
-                  <Bell size={24} />
-                  <p className="font-medium text-lg px-4 py-2 text-center text-pink-200">
-                    Be the first to know when we launch
-                  </p>
-                </div>
-                {actionData?.ok ? (
-                  <p className="text-center font-medium text-sm text-green-400">
-                    Notification scheduled successfully!
-                  </p>
-                ) : (
-                  <Fragment>
-                    <div className="mx-auto w-[min(420px,_100%)]">
-                      <Field
-                        id="email"
-                        name="email"
-                        type="email"
-                        label="Email"
-                        placeholder="Eg. john@gmail.com"
-                        disabled={transition.state === "submitting"}
-                        error={actionData?.errors?.email}
-                      />
-                    </div>
-                    <div className="flex flex-row items-stretch justify-center gap-2">
-                      <Button
-                        type="submit"
-                        ghost
-                        disabled={transition.state === "submitting"}
-                      >
-                        Notify me
-                      </Button>
-                    </div>
-                  </Fragment>
-                )}
-              </Form>
-              <div className="py-8 px-4 flex flex-col items-center justify-start gap-4 bg-green-800/5">
-                <div className="flex flex-col items-center justify-center gap-0">
-                  <Dollar size={24} />
-                  <p className="font-medium text-lg px-4 py-2 text-center text-green-200">
-                    Pre-booking will save you up to 50% on promotion
-                  </p>
-                </div>
-                <Button as={Link} to="/post" ghost>
-                  Pre book now
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PostCardWrapper>
+          {loaderData?.error ? (
+            <p className="text-center text-red-400 py-2">{loaderData?.error}</p>
+          ) : null}
+          {loaderData?.results?.length === 0 ? (
+            <p className="text-center py-2">
+              No results found! Try searching for something else.
+            </p>
+          ) : null}
+          {loaderData?.results?.map(function (result) {
+            return <Post key={result.id} post={result} />;
+          })}
+        </PostCardWrapper>
       </Main>
 
       <Footer />
