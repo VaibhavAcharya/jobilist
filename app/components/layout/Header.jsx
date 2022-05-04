@@ -9,6 +9,7 @@ import Heart from "./../icons/Heart";
 import Scale from "./../icons/Scale";
 import Code from "../icons/Code";
 import Cake from "../icons/Cake";
+import External from "../icons/External";
 
 export default function Header({
   showPitch = false,
@@ -100,12 +101,16 @@ export default function Header({
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
-                <p className="text-sm">Open source</p>
+                <p className="text-sm">
+                  <Anchor href="https://github.com/jobilist/jobilist" styled={false} className="flex flex-row items-center justify-start gap-1">
+                    <span>Open source</span>
+                    <External size={16} />
+                  </Anchor></p>
               </div>
             </div>
           </div>
           <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
-            <a href="https://www.buymeacoffee.com/jobilist" target="_blank" rel="noopener noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width={128} height={72} /></a>
+            <Anchor styled={false} href="https://www.buymeacoffee.com/jobilist" target="_blank" rel="noopener noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width={128} height={72} /></Anchor>
           </div>
         </Container>
       ) : null}

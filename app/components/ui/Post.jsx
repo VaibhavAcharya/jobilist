@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Link } from "@remix-run/react";
 
+import Anchor from "./Anchor";
 import Button from "./Button";
 import Chip from "./Chip";
 
@@ -9,7 +10,7 @@ import Location from "../icons/Location";
 import External from "../icons/External";
 import Sparkles from "../icons/Sparkles";
 import Mail from "../icons/Mail";
-import Anchor from "./Anchor";
+import Office from "../icons/Office";
 
 import { BRAND_COLOR_OPTIONS, JOB_TYPES_OPTIONS } from "../../constants";
 
@@ -24,13 +25,17 @@ export function Post({ post, expanded = false }) {
       ].join(" ")}
     >
       <div className="flex flex-row items-start justify-start gap-4">
-        <img
-          src={post.batch?.logoURL ? post.batch.logoURL : "/logo.svg"}
-          alt={`logo ${post.batch.name}`}
-          loading="lazy"
-          width={32}
-          height={32}
-        />
+        {
+          post.batch?.logoURL ? <img
+            src={post.batch.logoURL}
+            alt={`logo ${post.batch.name}`}
+            className="text-xs truncate"
+            loading="lazy"
+            width={32}
+            height={32}
+          /> : <Office width={32} height={32} className="text-neutral-400" />
+        }
+        
         <div className="flex-1 flex flex-col items-stretch justify-start gap-2">
           <div className="flex flex-col items-stretch justify-start">
             <p className="flex flex-row items-baseline justify-start gap-2">
