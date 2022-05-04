@@ -102,15 +102,45 @@ export default function Header({
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
                 <p className="text-sm">
-                  <Anchor href="https://github.com/jobilist/jobilist" styled={false} className="flex flex-row items-center justify-start gap-1">
+                  <Anchor
+                    href="https://github.com/jobilist/jobilist"
+                    styled={false}
+                    className="flex flex-row items-center justify-start gap-1"
+                  >
                     <span>Open source</span>
                     <External size={16} />
-                  </Anchor></p>
+                  </Anchor>
+                </p>
               </div>
             </div>
           </div>
           <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
-            <Anchor styled={false} href="https://www.buymeacoffee.com/jobilist" target="_blank" rel="noopener noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width={128} height={72} /></Anchor>
+            <Anchor
+              styled={false}
+              href="https://www.buymeacoffee.com/jobilist"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                alt="Buy Me A Coffee"
+                width={128}
+                height={72}
+              />
+            </Anchor>
+            <Anchor
+              styled={false}
+              href="https://www.producthunt.com/posts/jobilist?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jobilist"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=345426&theme=dark"
+                alt="Jobilist - The&#0032;only&#0032;job&#0032;board&#0032;you&#0032;will&#0032;ever&#0032;need&#0046; | Product Hunt"
+                width={172}
+                height={72}
+              />
+            </Anchor>
           </div>
         </Container>
       ) : null}
