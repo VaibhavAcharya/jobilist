@@ -51,20 +51,20 @@ export default function Footer() {
           </Anchor>
         </div>
         <div className="flex flex-row items-center justify-center flex-wrap gap-4">
-            <Anchor
-              styled={false}
-              href="https://www.producthunt.com/posts/jobilist?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jobilist"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=345426&theme=dark"
-                alt="Jobilist - The&#0032;only&#0032;job&#0032;board&#0032;you&#0032;will&#0032;ever&#0032;need&#0046; | Product Hunt"
-                width={96}
-                height={72}
-              />
-            </Anchor>
-            </div>
+          <Anchor
+            styled={false}
+            href="https://www.producthunt.com/posts/jobilist?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jobilist"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=345426&theme=dark"
+              alt="Jobilist - The&#0032;only&#0032;job&#0032;board&#0032;you&#0032;will&#0032;ever&#0032;need&#0046; | Product Hunt"
+              width={96}
+              height={22}
+            />
+          </Anchor>
+        </div>
       </Container>
     </div>
   );

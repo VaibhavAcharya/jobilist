@@ -110,18 +110,6 @@ export default function Post({ i, errors = {}, className = "" }) {
             placeholder="Eg. flutter, android, anything"
             required={false}
           />
-          {/* <div className="flex flex-row items-stretch justify-end flex-wrap gap-4">
-                          <Field
-                            component={Select}
-                            id={`posts[${i}].pinned`}
-                            name={`posts[${i}].pinned`}
-                            label="Pin to top"
-                            options={JOB_PIN_OPTIONS}
-                            defaultOption={JOB_PIN_OPTIONS[0]}
-                            disabled
-                            inDevelopment
-                          />
-                        </div> */}
         </div>
       </div>
     </PostCard>

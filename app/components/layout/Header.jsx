@@ -34,36 +34,32 @@ export default function Header({
         as="nav"
         className="flex flex-row items-center justify-between gap-4"
       >
-              <Anchor href="/" styled={false}>
-        <ul className="flex flex-row items-center justify-between gap-3">
-          <li>
-            <img src="/logo.svg" alt="logo Jobilist" width={30} height={30} />
-          </li>
-          <li>
-            <h1 className="font-medium">
-                Jobilist
-            </h1>
-          </li>
-        </ul>
-              </Anchor>
+        <Anchor href="/" styled={false}>
+          <ul className="flex flex-row items-center justify-between gap-3">
+            <li>
+              <img src="/logo.svg" alt="logo Jobilist" width={30} height={30} />
+            </li>
+            <li>
+              <h1 className="font-medium">Jobilist</h1>
+            </li>
+          </ul>
+        </Anchor>
 
         <ul className="flex flex-row items-center justify-between gap-2">
-              {home ? (
-                null
-              ) : (
-              <li><Button as={Link} to="/" ghost>
+          {home ? null : (
+            <li>
+              <Button as={Link} to="/" ghost>
                 Home
-              </Button></li>
-              )}
-            {posting ? (
-              null
-            ) : (
-          <li>
+              </Button>
+            </li>
+          )}
+          {posting ? null : (
+            <li>
               <Button as={Link} to="/post">
                 Post a job
               </Button>
-          </li>
-            )}
+            </li>
+          )}
         </ul>
       </Container>
       {showPitch ? (

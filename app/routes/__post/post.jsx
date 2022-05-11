@@ -1,5 +1,7 @@
-import { redirect } from "@remix-run/node";
+import { redirect, unstable_parseMultipartFormData } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
+
+import { uploadImage } from "../../utils/cloudinary";
 
 import { addBatch } from "../../utils/posts.server";
 
@@ -18,7 +20,18 @@ import Batch from "../../components/pages/post/Batch";
 import Footer from "../../components/layout/Footer";
 
 export async function action({ request }) {
-  const formData = await request.formData();
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    async function ({ stream, name, filename, ...otherProps }) {
+      if (name === "logo" && filename) {
+        const uploadedImage = await uploadImage(stream);
+
+        return uploadedImage.secure_url;
+      }
+
+      stream.resume();
+    }
+  );
 
   let errors = {};
 
@@ -27,7 +40,7 @@ export async function action({ request }) {
     website: formData.get("website"),
     name: formData.get("name"),
     description: formData.get("description"),
-    logoURL: formData.get("logoURL"),
+    logoURL: formData.get("logo"),
     color: formData.get("color"),
     expiresAfter: formData.get("expiresAfter"),
   };
@@ -99,6 +112,7 @@ export default function Post() {
         <Form
           replace
           method="POST"
+          encType="multipart/form-data"
           className="flex flex-col items-stretch justify-start gap-8 w-[min(720px,_100%)] mx-auto"
         >
           <Batch errors={actionData?.errors} />

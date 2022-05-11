@@ -29,7 +29,7 @@ export function Post({ post, expanded = false }) {
           <img
             src={post.batch.logoURL}
             alt={`logo ${post.batch.name}`}
-            className="text-xs truncate"
+            className="w-[32px] h-[32px] text-xs truncate rounded object-cover"
             loading="lazy"
             width={32}
             height={32}
@@ -40,7 +40,7 @@ export function Post({ post, expanded = false }) {
 
         <div className="flex-1 flex flex-col items-stretch justify-start gap-2">
           <div className="flex flex-col items-stretch justify-start">
-            <p className="flex flex-row items-baseline justify-start gap-2">
+            <p className="flex flex-row items-baseline justify-start flex-wrap gap-x-2 gap-y-0">
               <Anchor
                 href={`${post.batch.website}?ref=https://www.jobilist.com`}
                 target="_blank"
@@ -88,7 +88,7 @@ export function Post({ post, expanded = false }) {
       <div className="flex flex-row items-stretch justify-end flex-wrap-reverse gap-2">
         {expanded ? null : (
           <Button as={Link} to={`/p/${post.id}`} ghost>
-            Details
+            View details
           </Button>
         )}
         {post?.applyEmail ? (
