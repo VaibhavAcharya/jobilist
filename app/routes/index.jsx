@@ -122,7 +122,7 @@ export default function Index() {
 
   return (
     <Page>
-      <Header showPitch afterPostSuccess={afterPostSuccess} />
+      <Header home showPitch afterPostSuccess={afterPostSuccess} />
 
       <Main className="flex flex-col items-stretch justify-start gap-8">
         <Form
@@ -157,9 +157,6 @@ export default function Index() {
               Search
             </Button>
           </div>
-          {/* <div className="flex flex-row items-stretch justify-start flex-wrap gap-2">
-            TODO: filters and sort
-          </div> */}
         </Form>
 
         <PostCardWrapper>
