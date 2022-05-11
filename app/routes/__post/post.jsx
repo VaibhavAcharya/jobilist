@@ -10,14 +10,24 @@ import Button from "../../components/ui/Button";
 import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
+import Footer from "../../components/layout/Footer";
+
+import Batch from "../../components/pages/post/Batch";
 
 import {
   batchSchema,
   postSchema,
   getValidationErrors,
 } from "../../helpers/validation";
-import Batch from "../../components/pages/post/Batch";
-import Footer from "../../components/layout/Footer";
+
+import { DESCRIPTIONS, TITLES } from "../../constants";
+
+export function meta() {
+  return {
+    title: `${TITLES.POST} / ${TITLES.HOME}`,
+    description: DESCRIPTIONS.POST,
+  };
+}
 
 export async function action({ request }) {
   const formData = await unstable_parseMultipartFormData(
@@ -131,7 +141,7 @@ export default function Post() {
 
           <div className="flex flex-row items-center justify-center gap-2">
             <Button type="submit" disabled={transition.state === "submitting"}>
-              Post now
+              Pay & post now
             </Button>
           </div>
         </Form>

@@ -56,7 +56,7 @@ export default function Header({
           {posting ? null : (
             <li>
               <Button as={Link} to="/post">
-                Post a job
+                Post job
               </Button>
             </li>
           )}
