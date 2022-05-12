@@ -16,6 +16,7 @@ export default function Header({
   home = false,
   posting = false,
   afterPostSuccess = false,
+  afterPostFailure = false,
 }) {
   return (
     <div className="border-b border-neutral-800/50 bg-white/5 py-4 flex flex-col items-stretch justify-start gap-8">
@@ -26,6 +27,14 @@ export default function Header({
             <p className="font-medium text-sm">
               Congratulations! Your posts are live now.
             </p>
+          </div>
+        </Container>
+      ) : null}
+
+      {afterPostFailure ? (
+        <Container className="flex flex-row items-stretch justify-start">
+          <div className="flex-1 flex flex-row items-center justify-center gap-2 bg-red-500/20 p-2 rounded-md">
+            <p className="font-medium text-sm">Oops! Something went wrong.</p>
           </div>
         </Container>
       ) : null}

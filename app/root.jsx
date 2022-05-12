@@ -58,7 +58,10 @@ export default function Root() {
         <Outlet />
 
         <ScrollRestoration />
+
+        <script defer src="https://checkout.razorpay.com/v1/checkout.js" />
         <Scripts />
+
         <LiveReload />
       </body>
     </html>
