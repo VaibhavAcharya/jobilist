@@ -1,7 +1,12 @@
-import { redirect } from "@remix-run/node";
-import { Form, useActionData, useTransition } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import {
+  Form,
+  useActionData,
+  useNavigate,
+  useTransition,
+} from "@remix-run/react";
 
-import { addBatch } from "../../utils/posts.server";
+import { createOrder } from "../../utils/payment.server";
 
 import Button from "../../components/ui/Button";
 
@@ -74,26 +79,69 @@ export async function action({ request }) {
     };
   }
 
-  const { error } = await addBatch(batch, posts);
+  const orderId = await createOrder(postCount);
 
-  if (error) {
-    errors.other = error;
-
-    return {
-      errors,
-    };
-  }
-
-  return redirect("/?success=true");
+  return {
+    orderId,
+    batch,
+    posts,
+    key: process.env.RAZORPAY_KEY_ID,
+  };
 }
 
 export default function Post() {
   const actionData = useActionData();
   const transition = useTransition();
+  const [paymentStatus, setPaymentStatus] = useState(null);
+
+  const navigate = useNavigate();
+  useEffect(
+    function () {
+      if (actionData) {
+        const { amount, id: order_id, currency } = actionData.orderId;
+
+        const options = {
+          key: actionData.key,
+          amount: amount,
+          currency: currency,
+          name: "Jobilist",
+          order_id: order_id,
+          handler: async function (response) {
+            const data = {
+              orderCreationId: order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+              batch: actionData.batch,
+              posts: actionData.posts,
+            };
+
+            const result = await fetch("/api/checkPayment", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }).then(async (res) => {
+              const data = await res.json();
+              if (data?.success) {
+                navigate("/?success=true");
+              }
+              setPaymentStatus(data);
+            });
+          },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+      }
+    },
+    [actionData]
+  );
 
   return (
     <Page>
-      <Header posting />
+      <script async src="https://checkout.razorpay.com/v1/checkout.js" />
+      <Header posting afterPostFailure={paymentStatus} />
 
       <Main>
         <Form
@@ -116,7 +164,10 @@ export default function Post() {
           ) : null}
 
           <div className="flex flex-row items-center justify-center gap-2">
-            <Button type="submit" disabled={transition.state === "submitting"}>
+            <Button
+              type="submit"
+              disabled={transition.state === "submitting" || paymentStatus}
+            >
               Post now
             </Button>
           </div>
