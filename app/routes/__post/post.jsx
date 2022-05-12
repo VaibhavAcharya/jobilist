@@ -116,9 +116,11 @@ export async function action({ request }) {
 export default function Post() {
   const actionData = useActionData();
   const transition = useTransition();
-  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [paymentFailed, setPaymentFailed] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   useEffect(
     function () {
       if (actionData) {
@@ -139,18 +141,22 @@ export default function Post() {
               posts: actionData.posts,
             };
 
-            const result = await fetch("/api/checkPayment", {
+            await fetch("/api/checkPayment", {
               method: "POST",
               body: JSON.stringify(data),
               headers: {
                 "Content-Type": "application/json",
               },
             }).then(async (res) => {
+              setLoading(true);
               const data = await res.json();
               if (data?.success) {
                 navigate("/?success=true");
               }
-              setPaymentStatus(data);
+              if (data?.error) {
+                setPaymentFailed(true);
+                setLoading(false);
+              }
             });
           },
         };
@@ -159,13 +165,12 @@ export default function Post() {
         paymentObject.open();
       }
     },
-    [actionData]
+    [actionData, navigate]
   );
 
   return (
     <Page>
-      <script async src="https://checkout.razorpay.com/v1/checkout.js" />
-      <Header posting afterPostFailure={paymentStatus} />
+      <Header posting afterPostFailure={paymentFailed} />
 
       <Main>
         <Form
@@ -191,7 +196,7 @@ export default function Post() {
           <div className="flex flex-row items-center justify-center gap-2">
             <Button
               type="submit"
-              disabled={transition.state === "submitting" || paymentStatus}
+              disabled={transition.state === "submitting" || isLoading}
             >
               Pay & post now
             </Button>
