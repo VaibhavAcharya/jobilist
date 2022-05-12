@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
 
 import { db } from "../utils/db.server";
@@ -11,6 +12,7 @@ import Page from "../components/layout/Page";
 import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
 import Footer from "../components/layout/Footer";
+import { DESCRIPTIONS, TITLES } from "../constants";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -19,17 +21,19 @@ export async function loader({ request }) {
   const afterPostSuccess = searchParams.get("success") === "true";
   const query = searchParams.get("search");
 
-  if (query) {
-    const tokens = query
-      .trim()
-      .split(" ")
-      .map(function (token) {
-        return token.trim();
-      });
-    const tokensStringWithOR = tokens.join(" | ").replace("'", "/'");
+  try {
+    let results = null;
 
-    try {
-      const searchResponse = await db.post.findMany({
+    if (query) {
+      const tokens = query
+        .trim()
+        .split(" ")
+        .map(function (token) {
+          return token.trim();
+        });
+      const tokensStringWithOR = tokens.join(" | ").replace("'", "/'");
+
+      results = await db.post.findMany({
         where: {
           OR: [
             { title: { search: tokensStringWithOR } },
@@ -55,31 +59,6 @@ export async function loader({ request }) {
             },
           ],
         },
-        include: {
-          batch: true,
-        },
-      });
-
-      return {
-        afterPostSuccess,
-        results: searchResponse,
-      };
-    } catch (error) {
-      console.error(
-        `Error on searching for ${query}!`,
-        error,
-        tokens,
-        tokensStringWithOR
-      );
-
-      return {
-        afterPostSuccess,
-        error: "Unexpected error happened on server!",
-      };
-    }
-  } else {
-    try {
-      const latestResponse = await db.post.findMany({
         orderBy: {
           batch: {
             createdAt: "desc",
@@ -89,18 +68,43 @@ export async function loader({ request }) {
           batch: true,
         },
       });
-
-      return {
-        afterPostSuccess,
-        results: latestResponse,
-      };
-    } catch (error) {
-      return {
-        afterPostSuccess,
-        error: "Unexpected error happened on server!",
-      };
+    } else {
+      results = await db.post.findMany({
+        orderBy: {
+          batch: {
+            createdAt: "desc",
+          },
+        },
+        include: {
+          batch: true,
+        },
+      });
     }
+
+    return json(
+      {
+        afterPostSuccess,
+        results,
+      },
+      {
+        headers: {
+          "Cache-Control": "max-age=60, stale-while-revalidate=30",
+        },
+      }
+    );
+  } catch (error) {
+    return {
+      afterPostSuccess,
+      error: "Unexpected error happened on server!",
+    };
   }
+}
+
+export function meta() {
+  return {
+    title: TITLES.HOME,
+    description: DESCRIPTIONS.HOME,
+  };
 }
 
 export default function Index() {
@@ -122,7 +126,7 @@ export default function Index() {
 
   return (
     <Page>
-      <Header showPitch afterPostSuccess={afterPostSuccess} />
+      <Header home showPitch afterPostSuccess={afterPostSuccess} />
 
       <Main className="flex flex-col items-stretch justify-start gap-8">
         <Form
@@ -157,9 +161,6 @@ export default function Index() {
               Search
             </Button>
           </div>
-          {/* <div className="flex flex-row items-stretch justify-start flex-wrap gap-2">
-            TODO: filters and sort
-          </div> */}
         </Form>
 
         <PostCardWrapper>

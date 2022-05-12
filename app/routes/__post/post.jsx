@@ -7,23 +7,47 @@ import {
 } from "@remix-run/react";
 
 import { createOrder } from "../../utils/payment.server";
+import { unstable_parseMultipartFormData } from "@remix-run/node";
+
+import { uploadImage } from "../../utils/cloudinary";
 
 import Button from "../../components/ui/Button";
 
 import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
+import Footer from "../../components/layout/Footer";
+
+import Batch from "../../components/pages/post/Batch";
 
 import {
   batchSchema,
   postSchema,
   getValidationErrors,
 } from "../../helpers/validation";
-import Batch from "../../components/pages/post/Batch";
-import Footer from "../../components/layout/Footer";
+
+import { DESCRIPTIONS, TITLES } from "../../constants";
+
+export function meta() {
+  return {
+    title: `${TITLES.POST} / ${TITLES.HOME}`,
+    description: DESCRIPTIONS.POST,
+  };
+}
 
 export async function action({ request }) {
-  const formData = await request.formData();
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    async function ({ stream, name, filename, ...otherProps }) {
+      if (name === "logo" && filename) {
+        const uploadedImage = await uploadImage(stream);
+
+        return uploadedImage.secure_url;
+      }
+
+      stream.resume();
+    }
+  );
 
   let errors = {};
 
@@ -32,7 +56,7 @@ export async function action({ request }) {
     website: formData.get("website"),
     name: formData.get("name"),
     description: formData.get("description"),
-    logoURL: formData.get("logoURL"),
+    logoURL: formData.get("logo"),
     color: formData.get("color"),
     expiresAfter: formData.get("expiresAfter"),
   };
@@ -147,6 +171,7 @@ export default function Post() {
         <Form
           replace
           method="POST"
+          encType="multipart/form-data"
           className="flex flex-col items-stretch justify-start gap-8 w-[min(720px,_100%)] mx-auto"
         >
           <Batch errors={actionData?.errors} />
@@ -168,7 +193,7 @@ export default function Post() {
               type="submit"
               disabled={transition.state === "submitting" || paymentStatus}
             >
-              Post now
+              Pay & post now
             </Button>
           </div>
         </Form>

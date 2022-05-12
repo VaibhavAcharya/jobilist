@@ -17,8 +17,7 @@ const BRAND_COLOR_OPTIONS_WITH_BALL = addColorBoxToOptions(BRAND_COLOR_OPTIONS);
 export default function Batch({ errors = {} }) {
   const [postCount, setPostCount] = useState(2);
 
-  const [color, setColor] = useState(BRAND_COLOR_OPTIONS[0].value);
-  const [expiresAfter, setExpiresAfter] = useState(JOB_EXPIRE_OPTIONS[0].value);
+  const [color, setColor] = useState(BRAND_COLOR_OPTIONS[11].value);
 
   return (
     <Fragment>
@@ -58,14 +57,13 @@ export default function Batch({ errors = {} }) {
           </div>
           <div className="flex flex-row items-stretch justify-start flex-wrap gap-4">
             <Field
-              id="logoURL"
-              name="logoURL"
-              type="url"
-              label="Logo URL"
+              component={FileInput}
+              id="logo"
+              name="logo"
+              label="Logo"
               required={false}
-              placeholder="Eg. https://www.google.com/logo.svg"
-              inDevelopment
-              error={errors?.logoURL}
+              accept="image/*"
+              error={errors?.logo}
             />
             <Field
               component={Select}
@@ -80,12 +78,6 @@ export default function Batch({ errors = {} }) {
               })}
               error={errors?.color}
               onChange={setColor}
-              price={
-                BRAND_COLOR_OPTIONS.find(function (option) {
-                  return option.value === color;
-                })?.price
-              }
-              discountedPrice="0"
             />
           </div>
           <Field
@@ -110,6 +102,7 @@ export default function Batch({ errors = {} }) {
               max={10}
               error={errors?.postCount}
               onChange={setPostCount}
+              price={postCount}
             />
 
             <Field
@@ -118,17 +111,8 @@ export default function Batch({ errors = {} }) {
               name="expiresAfter"
               label="Expires after"
               options={JOB_EXPIRE_OPTIONS}
-              defaultOption={JOB_EXPIRE_OPTIONS.find(function (option) {
-                return option.value === expiresAfter;
-              })}
+              defaultOption={JOB_EXPIRE_OPTIONS[1]}
               error={errors?.expiresAfter}
-              onChange={setExpiresAfter}
-              price={
-                JOB_EXPIRE_OPTIONS.find(function (option) {
-                  return option.value === expiresAfter;
-                })?.price
-              }
-              discountedPrice="0"
             />
           </div>
         </div>

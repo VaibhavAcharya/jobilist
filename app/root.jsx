@@ -13,7 +13,6 @@ import indexStylesRef from "./styles/index.css";
 export function meta() {
   return {
     charset: "utf-8",
-    title: "Jobilist — The only job board you will ever need.",
     viewport: "width=device-width,initial-scale=1",
   };
 }

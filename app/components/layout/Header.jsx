@@ -13,6 +13,7 @@ import External from "../icons/External";
 
 export default function Header({
   showPitch = false,
+  home = false,
   posting = false,
   afterPostSuccess = false,
   afterPostFailure = false,
@@ -42,36 +43,32 @@ export default function Header({
         as="nav"
         className="flex flex-row items-center justify-between gap-4"
       >
-        <ul className="flex flex-row items-center justify-between gap-3">
-          <li>
-            <img src="/logo.svg" alt="logo Jobilist" width={30} height={30} />
-          </li>
-          <li>
-            <h1 className="font-medium">
-              <Anchor href="/" styled={false}>
-                Jobilist
-              </Anchor>
-            </h1>
-          </li>
-          <li>
-            <p className="text-xs text- font-medium bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 px-2 py-1 rounded-full">
-              Beta
-            </p>
-          </li>
-        </ul>
+        <Anchor href="/" styled={false}>
+          <ul className="flex flex-row items-center justify-between gap-3">
+            <li>
+              <img src="/logo.svg" alt="logo Jobilist" width={30} height={30} />
+            </li>
+            <li>
+              <h1 className="font-medium">Jobilist</h1>
+            </li>
+          </ul>
+        </Anchor>
 
         <ul className="flex flex-row items-center justify-between gap-2">
-          <li>
-            {posting ? (
+          {home ? null : (
+            <li>
               <Button as={Link} to="/" ghost>
                 Home
               </Button>
-            ) : (
+            </li>
+          )}
+          {posting ? null : (
+            <li>
               <Button as={Link} to="/post">
-                Post a job
+                Post job
               </Button>
-            )}
-          </li>
+            </li>
+          )}
         </ul>
       </Container>
       {showPitch ? (
@@ -102,17 +99,19 @@ export default function Header({
               </p>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
-                <p className="text-sm">Posting is free forever</p>
+                <p className="text-sm">No nonsense platform</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
-                <p className="text-sm">Fair promotion pricing</p>
+                <p className="text-sm">$1 per post</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
                 <p className="text-sm">
                   <Anchor
                     href="https://github.com/jobilist/jobilist"
+                    target="_black"
+                    rel="noopener noreferrer"
                     styled={false}
                     className="flex flex-row items-center justify-start gap-1"
                   >
@@ -124,32 +123,14 @@ export default function Header({
             </div>
           </div>
           <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
-            <Anchor
-              styled={false}
-              href="https://www.buymeacoffee.com/jobilist"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-                alt="Buy Me A Coffee"
-                width={128}
-                height={72}
-              />
-            </Anchor>
-            <Anchor
-              styled={false}
-              href="https://www.producthunt.com/posts/jobilist?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jobilist"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=345426&theme=dark"
-                alt="Jobilist - The&#0032;only&#0032;job&#0032;board&#0032;you&#0032;will&#0032;ever&#0032;need&#0046; | Product Hunt"
-                width={172}
-                height={72}
-              />
-            </Anchor>
+            <div className="flex flex-col items-stretch justify-start">
+              <p className="font-medium text-lg">1000+</p>
+              <p className="text-sm text-neutral-400">daily visiters</p>
+            </div>
+            <div className="flex flex-col items-stretch justify-start">
+              <p className="font-medium text-lg">50+</p>
+              <p className="text-sm text-neutral-400">active jobs</p>
+            </div>
           </div>
         </Container>
       ) : null}
