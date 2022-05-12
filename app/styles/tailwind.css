@@ -513,6 +513,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 1rem;
 }
 
+.h-\[32px\] {
+  height: 32px;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -527,14 +531,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .h-auto {
   height: auto;
-}
-
-.h-\[32\] {
-  height: 32;
-}
-
-.h-\[32px\] {
-  height: 32px;
 }
 
 .min-h-full {
@@ -557,6 +553,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 1rem;
 }
 
+.w-\[32px\] {
+  width: 32px;
+}
+
 .w-8 {
   width: 2rem;
 }
@@ -567,14 +567,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-1\/2 {
   width: 50%;
-}
-
-.w-\[32\] {
-  width: 32;
-}
-
-.w-\[32px\] {
-  width: 32px;
 }
 
 .min-w-0 {
@@ -978,11 +970,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-clip-text {
   -webkit-background-clip: text;
           background-clip: text;
-}
-
-.object-contain {
-  -o-object-fit: contain;
-     object-fit: contain;
 }
 
 .object-cover {
