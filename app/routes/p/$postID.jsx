@@ -26,14 +26,11 @@ export async function loader({ params }) {
     });
 
     if (postData) {
-      return json(
-        postData,
-        {
-          headers: {
-            "Cache-Control": "max-age=604800, stale-while-revalidate=86400",
-          },
-        }
-      );
+      return json(postData, {
+        headers: {
+          "Cache-Control": "max-age=604800, stale-while-revalidate=86400",
+        },
+      });
     }
   } catch (error) {
     console.error(`Error fetching data for post ${postID}!`, error);
