@@ -12,7 +12,7 @@ import Page from "../components/layout/Page";
 import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
 import Footer from "../components/layout/Footer";
-import { DESCRIPTIONS, TITLES } from "../constants";
+import { DESCRIPTIONS, TITLES } from "../meta";
 
 export async function loader({ request }) {
   const url = new URL(request.url);

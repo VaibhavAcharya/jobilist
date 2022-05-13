@@ -10,7 +10,7 @@ import Main from "../../components/layout/Main";
 import Page from "../../components/layout/Page";
 import { Post, PostCardWrapper } from "../../components/ui/Post";
 
-import { TITLES } from "../../constants";
+import { TITLES } from "../../meta";
 
 export async function loader({ params }) {
   const postID = params.postID;

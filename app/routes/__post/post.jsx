@@ -26,7 +26,7 @@ import {
   getValidationErrors,
 } from "../../helpers/validation";
 
-import { DESCRIPTIONS, TITLES } from "../../constants";
+import { DESCRIPTIONS, TITLES } from "../../meta";
 
 export function meta() {
   return {
