@@ -1,9 +1,9 @@
-import Page from "~/components/layout/Page";
-import Header from "~/components/layout/Header";
-import Main from "~/components/layout/Main";
-import Footer from "~/components/layout/Footer";
+import Page from "../../components/layout/Page";
+import Header from "../../components/layout/Header";
+import Main from "../../components/layout/Main";
+import Footer from "../../components/layout/Footer";
 
-import { DESCRIPTIONS, TITLES } from "~/constants";
+import { DESCRIPTIONS, TITLES } from "../../constants";
 
 export function meta() {
   return {
