@@ -7,8 +7,8 @@ export async function createOrder(count) {
   });
 
   const orderOptions = {
-    amount: parseInt(count) * 100,
-    currency: "USD",
+    amount: parseFloat(count) * 100 * 75,
+    currency: "INR",
   };
 
   const order = await instance.orders.create(orderOptions);
