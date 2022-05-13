@@ -1,3 +1,5 @@
+import { Link } from "@remix-run/react";
+
 import Anchor from "../ui/Anchor";
 import Container from "./Container";
 
@@ -34,6 +36,18 @@ export default function Footer() {
           </Anchor>
           .
         </p>
+        <ul className="flex flex-row items-center justify-center gap-2 text-xs">
+          <li className="">
+            <Anchor as={Link} to="/legal/privacy">
+              Privacy policy
+            </Anchor>
+          </li>
+          <li className="">
+            <Anchor as={Link} to="/legal/privacy#contact">
+              Contact Us
+            </Anchor>
+          </li>
+        </ul>
         <div className="hidden" aria-hidden="true">
           <Anchor
             href="https://vaibhavacharya.github.io/"
@@ -50,7 +64,7 @@ export default function Footer() {
             Naman Vyas
           </Anchor>
         </div>
-        <div className="flex flex-row items-center justify-center flex-wrap gap-4">
+        {/* <div className="flex flex-row items-center justify-center flex-wrap gap-4">
           <Anchor
             styled={false}
             href="https://www.producthunt.com/posts/jobilist?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jobilist"
@@ -64,7 +78,10 @@ export default function Footer() {
               height={22}
             />
           </Anchor>
-        </div>
+        </div> */}
+        <p className="text-xs text-center text-neutral-400">
+          &copy; Jobilist, 2022
+        </p>
       </Container>
     </div>
   );

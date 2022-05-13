@@ -102,7 +102,6 @@ export default function Batch({ errors = {} }) {
               max={10}
               error={errors?.postCount}
               onChange={setPostCount}
-              price={postCount}
             />
 
             <Field

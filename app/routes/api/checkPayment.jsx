@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { addBatch } from "~/utils/posts.server";
+import { addBatch } from "../../utils/posts.server";
 
 export async function action({ request }) {
   try {
