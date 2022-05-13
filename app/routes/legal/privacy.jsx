@@ -3,14 +3,14 @@ import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import Footer from "../../components/layout/Footer";
 
-import { DESCRIPTIONS, TITLES } from "../../constants";
+// import { DESCRIPTIONS, TITLES } from "../../constants";
 
-export function meta() {
-  return {
-    title: `${TITLES.PRIVACY} / ${TITLES.HOME}`,
-    description: DESCRIPTIONS.PRIVACY,
-  };
-}
+// export function meta() {
+//   return {
+//     title: `${TITLES.PRIVACY} / ${TITLES.HOME}`,
+//     description: DESCRIPTIONS.PRIVACY,
+//   };
+// }
 
 export default function Privacy() {
   return (
