@@ -11,6 +11,7 @@ export default function Anchor({
     <As
       className={[
         styled ? "text-blue-500" : null,
+        "hover:opacity-80",
         FOCUS_STYLES,
         className,
       ].join(" ")}

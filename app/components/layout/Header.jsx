@@ -49,7 +49,7 @@ export default function Header({
               <img src="/logo.svg" alt="logo Jobilist" width={30} height={30} />
             </li>
             <li>
-              <h1 className="font-medium">Jobilist</h1>
+              <p className="font-medium">Jobilist</p>
             </li>
           </ul>
         </Anchor>
@@ -76,21 +76,22 @@ export default function Header({
           as="header"
           className="flex flex-col items-stretch justify-start gap-1"
         >
-          <div className="flex flex-row items-center justify-start gap-2">
-            <p className="font-medium text-sm text-yellow-200">Lively</p>
+          {/* <div className="flex flex-row items-center justify-start gap-2 text-xs">
+            <p className="font-medium text-yellow-200">Lively</p>
             <p className="text-neutral-400">—</p>
-            <p className="font-medium text-sm text-green-200">Affordable</p>
+            <p className="font-medium text-green-200">Affordable</p>
             <p className="text-neutral-400">—</p>
-            <p className="font-medium text-sm text-pink-200">Beautiful</p>
-          </div>
-          <div className="flex flex-row items-end justify-between flex-wrap gap-4">
+            <p className="font-medium text-pink-200">Beautiful</p>
+          </div> */}
+          <div className="flex flex-row items-start justify-between flex-wrap gap-4">
             <div className="w-[48ch] flex flex-col items-stretch justify-start gap-1">
-              <h2 className="font-bold text-2xl bg-clip-text bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 text-transparent">
-                The only job board you will ever need.
-              </h2>
+              <h1 className="font-bold text-2xl bg-clip-text bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 text-transparent">
+                Where talent finds opportunity.
+              </h1>
               <p className="text-neutral-400">
-                We studied hundreds of employment websites to create an amazing
-                experience for both job seekers & employers.
+                A fantastic job search engine that connects job seekers with the
+                top employers across the world to help them find the perfect
+                career opportunity.
               </p>
             </div>
             <div className="flex flex-col items-stretch justify-start gap-1">
@@ -99,11 +100,11 @@ export default function Header({
               </p>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
-                <p className="text-sm">No nonsense platform</p>
+                <p className="text-sm">No nonsense</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
-                <p className="text-sm">$1 per post</p>
+                <p className="text-sm">Value for money</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
