@@ -6,6 +6,8 @@ import Lock from "../icons/Lock";
 import Ban from "../icons/Ban";
 import Beaker from "../icons/Beaker";
 
+import { getCurrencySymbolFromCurrencyValue } from "../../helpers/misc";
+
 function Field(
   {
     component: Component = Input,
@@ -16,6 +18,7 @@ function Field(
     disabled = false,
     inDevelopment = false,
     error,
+    currency,
     price,
     discountedPrice,
     children,
@@ -49,7 +52,10 @@ function Field(
           {price ? (
             <p className="text-xs flex flex-row items-baseline justify-start gap-1">
               {discountedPrice ? (
-                <span className="text-green-200">${discountedPrice}</span>
+                <span className="text-green-200">
+                  {getCurrencySymbolFromCurrencyValue(currency)}
+                  {discountedPrice}
+                </span>
               ) : null}
               <span
                 className={[
@@ -58,7 +64,8 @@ function Field(
                     : "text-green-200",
                 ].join(" ")}
               >
-                ${price}
+                {getCurrencySymbolFromCurrencyValue(currency)}
+                {price}
               </span>
             </p>
           ) : null}

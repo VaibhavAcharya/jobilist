@@ -4,6 +4,7 @@ import {
   BRAND_COLOR_OPTION_VALUES,
   JOB_EXPIRE_OPTION_VALUES,
   JOB_TYPES_OPTION_VALUES,
+  CURRENCY_OPTION_VALUES,
 } from "../constants";
 
 function nullableNumberTransformer(currentValue, originalValue) {
@@ -64,6 +65,11 @@ export const batchSchema = object({
   expiresAfter: string()
     .typeError(ERROR_MESSAGES.type)
     .oneOf(JOB_EXPIRE_OPTION_VALUES, ERROR_MESSAGES.option)
+    .required(ERROR_MESSAGES.required),
+
+  currency: string()
+    .typeError(ERROR_MESSAGES.type)
+    .oneOf(CURRENCY_OPTION_VALUES, ERROR_MESSAGES.option)
     .required(ERROR_MESSAGES.required),
 
   postCount: number()

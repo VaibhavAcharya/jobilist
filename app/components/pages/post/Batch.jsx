@@ -14,9 +14,7 @@ import { PostCardWrapper } from "../../ui/Post";
 
 const BRAND_COLOR_OPTIONS_WITH_BALL = addColorBoxToOptions(BRAND_COLOR_OPTIONS);
 
-export default function Batch({ errors = {} }) {
-  const [postCount, setPostCount] = useState(2);
-
+export default function Batch({ postCount, setPostCount, errors = {} }) {
   const [color, setColor] = useState(BRAND_COLOR_OPTIONS[11].value);
 
   return (

@@ -1,14 +1,16 @@
 import Razorpay from "razorpay";
 
-export async function createOrder(count) {
+import { getPostPriceFromCurrencyValue } from "../helpers/misc";
+
+export async function createOrder(count, currency) {
   const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
 
   const orderOptions = {
-    amount: parseFloat(count) * 100 * 75,
-    currency: "INR",
+    amount: parseFloat(count) * getPostPriceFromCurrencyValue(currency),
+    currency,
   };
 
   const order = await instance.orders.create(orderOptions);

@@ -100,11 +100,11 @@ export default function Header({
               </p>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
-                <p className="text-sm">No nonsense</p>
+                <p className="text-sm">1% goes to charity</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
-                <p className="text-sm">Value for money</p>
+                <p className="text-sm">Only $1 per post</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
