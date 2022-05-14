@@ -33,7 +33,6 @@ import {
 import { CURRENCY_OPTIONS } from "../../constants";
 import { DESCRIPTIONS, TITLES } from "../../meta";
 
-
 export function meta() {
   return {
     title: `${TITLES.POST} / ${TITLES.HOME}`,
@@ -133,7 +132,7 @@ export default function Post() {
 
   useEffect(
     function () {
-      if (actionData) {
+      if (actionData && !actionData?.errors) {
         const { amount, id: order_id, currency } = actionData.orderId;
 
         const options = {
