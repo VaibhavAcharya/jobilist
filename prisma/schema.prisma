@@ -48,3 +48,15 @@ model Post {
   batchID String
   batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
+
+model Notification {
+  id String @id @default(uuid())
+
+  email String
+
+  query String
+
+  createdAt DateTime @default(now())
+
+  @@unique([email, query])
+}

@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 import { json } from "@remix-run/node";
-import { Form, useLoaderData, useTransition } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react";
 
 import { db } from "../utils/db.server";
 
@@ -13,6 +19,7 @@ import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
 import Footer from "../components/layout/Footer";
 import { DESCRIPTIONS, TITLES } from "../meta";
+import { emailSchema } from "~/helpers/validation";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -85,6 +92,8 @@ export async function loader({ request }) {
       {
         afterPostSuccess,
         results,
+
+        query,
       },
       {
         headers: {
@@ -93,9 +102,51 @@ export async function loader({ request }) {
       }
     );
   } catch (error) {
+    console.error(error);
+
     return {
       afterPostSuccess,
       error: "Unexpected error happened on server!",
+    };
+  }
+}
+
+export async function action({ request }) {
+  const formData = await request.formData();
+
+  const email = formData.get("email");
+  const query = formData.get("query");
+
+  if (emailSchema.isValidSync(email) && query) {
+    try {
+      await db.notification.upsert({
+        where: {
+          email_query: {
+            email,
+            query,
+          },
+        },
+        update: {},
+        create: {
+          email,
+          query,
+        },
+      });
+
+      return {
+        result:
+          "We will now let you know when a job for this query is available.",
+      };
+    } catch (error) {
+      console.error(error);
+
+      return {
+        error: "Unexpected error happened on server!",
+      };
+    }
+  } else {
+    return {
+      error: "Please enter an valid email.",
     };
   }
 }
@@ -109,20 +160,31 @@ export function meta() {
 
 export default function Index() {
   const loaderData = useLoaderData();
+
   const transition = useTransition();
 
   const afterPostSuccess = loaderData?.afterPostSuccess;
 
-  const searchFieldRef = useRef();
+  const notifyFormRef = useRef();
+  const notifyFetcher = useFetcher();
 
   useEffect(
     function () {
-      if (transition.state === "idle") {
-        searchFieldRef.current?.focus();
+      if (notifyFetcher.type === "done" && notifyFetcher.data?.result) {
+        notifyFormRef.current.reset();
       }
     },
-    [transition]
+    [notifyFetcher]
   );
+
+  useEffect(
+    function () {
+      notifyFetcher.data = {};
+    },
+    [notifyFetcher, loaderData?.query]
+  );
+
+  const isBusy = transition.state !== "idle" || notifyFetcher.state !== "idle";
 
   return (
     <Page>
@@ -140,9 +202,11 @@ export default function Index() {
           >
             Find your dream job now
           </label>
-          <div className="flex flex-row items-stretch justify-start gap-2">
+          <fieldset
+            className="flex flex-row items-stretch justify-start gap-2"
+            disabled={isBusy}
+          >
             <Field
-              ref={searchFieldRef}
               id="search"
               className="flex-1"
               type="text"
@@ -150,27 +214,66 @@ export default function Index() {
               placeholder="Eg. Frontend developer, React.js, Tesla, etc."
               required={false}
               autoComplete="off"
-              disabled={transition.state === "submitting"}
               autoFocus
+              defaultValue={loaderData.query}
             />
-            <Button
-              type="submit"
-              ghost
-              disabled={transition.state === "submitting"}
-            >
+            <Button type="submit" ghost>
               Search
             </Button>
-          </div>
+          </fieldset>
         </Form>
 
         <PostCardWrapper>
           {loaderData?.error ? (
-            <p className="text-center text-red-400 py-2">{loaderData?.error}</p>
+            <p className="text-center text-red-400 py-6">{loaderData?.error}</p>
           ) : null}
           {loaderData?.results?.length === 0 ? (
-            <p className="text-center py-2">
-              No results found! Try searching for something else.
-            </p>
+            <div className="py-6 flex flex-col items-stretch justify-start gap-4">
+              <p className="text-center">
+                No results found! Try searching for something else.
+              </p>
+              <p className="text-center text-sm">OR</p>
+              <notifyFetcher.Form
+                ref={notifyFormRef}
+                replace
+                method="POST"
+                className="flex flex-col items-stretch justify-start gap-2"
+              >
+                <fieldset
+                  className="w-[min(320px,_100%)] mx-auto flex flex-col items-stretch justify-center flex-wrap gap-2"
+                  disabled={isBusy}
+                >
+                  <input type="hidden" name="query" value={loaderData.query} />
+
+                  <Field
+                    id="email"
+                    type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="Eg. john@gmail.com"
+                  />
+                  <Button type="submit">Notify when available</Button>
+                </fieldset>
+              </notifyFetcher.Form>
+
+              {notifyFetcher.state === "idle" ? (
+                <>
+                  {notifyFetcher.data?.result ? (
+                    <p className="text-center text-green-400">
+                      {notifyFetcher.data.result}
+                    </p>
+                  ) : null}
+
+                  {notifyFetcher.data?.error ? (
+                    <p className="text-center text-red-400">
+                      {notifyFetcher.data.error}
+                    </p>
+                  ) : null}
+                </>
+              ) : (
+                <p className="text-center">Wait...</p>
+              )}
+            </div>
           ) : null}
           {loaderData?.results?.map(function (result) {
             return <Post key={result.id} post={result} />;

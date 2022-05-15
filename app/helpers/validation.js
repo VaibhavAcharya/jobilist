@@ -38,6 +38,11 @@ const ERROR_MESSAGES = {
   },
 };
 
+export const emailSchema = string()
+  .typeError(ERROR_MESSAGES.type)
+  .email(ERROR_MESSAGES.email)
+  .required(ERROR_MESSAGES.required);
+
 export const batchSchema = object({
   email: string()
     .typeError(ERROR_MESSAGES.type)
