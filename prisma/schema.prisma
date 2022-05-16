@@ -49,6 +49,16 @@ model Post {
   batch   Batch  @relation(fields: [batchID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
+model Search {
+  id String @id @default(uuid())
+
+  query String @unique
+  count Int @default(0)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 model Notification {
   id String @id @default(uuid())
 

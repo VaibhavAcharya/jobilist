@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { json } from "@remix-run/node";
 import {
   Form,
-  useActionData,
   useFetcher,
   useLoaderData,
   useTransition,
@@ -18,8 +17,11 @@ import Page from "../components/layout/Page";
 import Header from "../components/layout/Header";
 import Main from "../components/layout/Main";
 import Footer from "../components/layout/Footer";
+
 import { DESCRIPTIONS, TITLES } from "../meta";
-import { emailSchema } from "~/helpers/validation";
+
+import { emailSchema } from "../helpers/validation";
+import { capitalizeSentence } from "../helpers/misc";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -73,6 +75,20 @@ export async function loader({ request }) {
         },
         include: {
           batch: true,
+        },
+      });
+
+      await db.search.upsert({
+        where: {
+          query,
+        },
+        update: {
+          count: {
+            increment: 1,
+          },
+        },
+        create: {
+          query,
         },
       });
     } else {
@@ -151,9 +167,11 @@ export async function action({ request }) {
   }
 }
 
-export function meta() {
+export function meta({ data }) {
   return {
-    title: TITLES.HOME,
+    title: data?.query
+      ? `${capitalizeSentence(data.query)} jobs @ ${TITLES.HOME}`
+      : TITLES.HOME,
     description: DESCRIPTIONS.HOME,
   };
 }

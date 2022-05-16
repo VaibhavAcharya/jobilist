@@ -132,6 +132,10 @@ export default function Header({
               <p className="font-medium text-lg">50+</p>
               <p className="text-sm text-neutral-400">active jobs</p>
             </div>
+            <div className="flex flex-col items-stretch justify-start">
+              <p className="font-medium text-lg">100+</p>
+              <p className="text-sm text-neutral-400">email subscribers</p>
+            </div>
           </div>
         </Container>
       ) : null}

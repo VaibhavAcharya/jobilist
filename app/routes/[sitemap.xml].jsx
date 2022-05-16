@@ -1,5 +1,7 @@
 import { db } from "../utils/db.server";
 
+const SITE = "https://www.jobilist.com";
+
 const START = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 const END = `</urlset>`;
 
@@ -10,19 +12,29 @@ function getURLEntry(loc, priority) {
 export async function loader() {
   let urls = [];
 
-  urls.push(getURLEntry("https://www.jobilist.com/", "1.0"));
-  urls.push(getURLEntry("https://www.jobilist.com/post", 0.8));
-  urls.push(getURLEntry("https://www.jobilist.com/legal/privacy", 0.25));
+  urls.push(getURLEntry(`${SITE}`, "1.0"));
+  urls.push(getURLEntry(`${SITE}/post`, 0.8));
+  urls.push(getURLEntry(`${SITE}/legal/privacy`, 0.25));
 
   try {
     const posts = await db.post.findMany();
     posts.map(function (post) {
-      urls.push(getURLEntry(`https://www.jobilist.com/p/${post.id}`, 0.5));
+      urls.push(getURLEntry(`${SITE}/p/${post.id}`, 0.5));
 
       return post;
     });
+
+    const searches = await db.search.findMany();
+    searches.map(function (search) {
+      urls.push(getURLEntry(`${SITE}/?index=&search=${search.query}`));
+
+      return search;
+    });
   } catch (error) {
-    console.error("Error while fetching posts to generate sitemap.xml!", error);
+    console.error(
+      "Error while fetching posts and searches to generate sitemap.xml!",
+      error
+    );
   }
 
   const content = `${START}${urls.join("")}${END}`;
