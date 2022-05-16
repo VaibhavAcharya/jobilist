@@ -6,9 +6,7 @@ const START = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 const END = `</urlset>`;
 
 function getURLEntry(loc, priority) {
-  return `<url><loc>${SITE}${encodeURIComponent(
-    loc
-  )}</loc><priority>${priority}</priority></url>`;
+  return `<url><loc>${SITE}${loc}</loc><priority>${priority}</priority></url>`;
 }
 
 export async function loader() {
@@ -28,7 +26,14 @@ export async function loader() {
 
     const searches = await db.search.findMany();
     searches.map(function (search) {
-      urls.push(getURLEntry(`/?index=&search=${search.query}`, 0.5));
+      urls.push(
+        getURLEntry(
+          `/?index=${encodeURIComponent("&")}search=${encodeURIComponent(
+            search.query
+          )}`,
+          0.5
+        )
+      );
 
       return search;
     });
