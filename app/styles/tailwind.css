@@ -509,10 +509,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: flex;
 }
 
-.table {
-  display: table;
-}
-
 .hidden {
   display: none;
 }
