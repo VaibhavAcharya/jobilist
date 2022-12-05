@@ -4,8 +4,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
+}
+
+model View {
+  url String @unique
+  count Int @default(1)
 }
 
 model Batch {

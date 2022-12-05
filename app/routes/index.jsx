@@ -40,27 +40,26 @@ export async function loader({ request }) {
         .map(function (token) {
           return token.trim();
         });
-      const tokensStringWithOR = tokens.join(" | ").replace("'", "/'");
 
       results = await db.post.findMany({
         where: {
           OR: [
-            { title: { search: tokensStringWithOR } },
-            { type: { search: tokensStringWithOR } },
-            { location: { search: tokensStringWithOR } },
-            { description: { search: tokensStringWithOR } },
+            { title: { contains: query, mode: "insensitive" } },
+            { type: { contains: query, mode: "insensitive" } },
+            { location: { contains: query, mode: "insensitive" } },
+            { description: { contains: query, mode: "insensitive" } },
             { tags: { hasSome: tokens } },
             {
               batch: {
                 OR: [
                   {
                     name: {
-                      search: tokensStringWithOR,
+                      contains: query, mode: "insensitive",
                     },
                   },
                   {
                     description: {
-                      search: tokensStringWithOR,
+                      contains: query, mode: "insensitive",
                     },
                   },
                 ],
@@ -233,7 +232,7 @@ export default function Index() {
               required={false}
               autoComplete="off"
               autoFocus
-              defaultValue={loaderData.query}
+              defaultValue={loaderData?.query ?? ''}
             />
             <Button type="submit" ghost>
               Search

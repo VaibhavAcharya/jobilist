@@ -5,10 +5,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 
 import tailwindCSSStylesRef from "./styles/tailwind.css";
 import indexStylesRef from "./styles/index.css";
+import { useEffect } from "react";
 
 export function meta() {
   return {
@@ -45,6 +48,14 @@ export function links() {
 }
 
 export default function Root() {
+  const location = useLocation();
+
+  useEffect(function () {
+    (async function () {
+      await fetch(`/api/view?url=${location.pathname}`);
+    })();
+  }, [location.pathname]);
+
   return (
     <html
       lang="en"
@@ -58,10 +69,8 @@ export default function Root() {
         <Outlet />
 
         <ScrollRestoration />
-
-        <script defer src="https://checkout.razorpay.com/v1/checkout.js" />
         <Scripts />
-
+        
         <LiveReload />
       </body>
     </html>

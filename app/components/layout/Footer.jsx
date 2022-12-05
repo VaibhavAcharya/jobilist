@@ -10,14 +10,14 @@ export default function Footer() {
         as="footer"
         className="flex flex-col items-stretch justify-start gap-2"
       >
-        <p className="text-sm text-center">
+        {/* <p className="text-sm text-center">
           We welcome support inquiries and feedback at{" "}
-          <Anchor href="mailto:jobilistcom@gmail.com">
-            jobilistcom@gmail.com
+          <Anchor href="mailto:vaibhavacharya111@gmail.com">
+            vaibhavacharya111@gmail.com
           </Anchor>
           .
-        </p>
-        <p className="text-xs text-center text-neutral-400">
+        </p> */}
+        {/* <p className="text-sm text-center">
           Build by{" "}
           <Anchor
             href="https://twitter.com/VaibhavAcharya_"
@@ -35,8 +35,8 @@ export default function Footer() {
             Naman Vyas
           </Anchor>
           .
-        </p>
-        <ul className="flex flex-row items-center justify-center gap-2 text-xs">
+        </p> */}
+        {/* <ul className="flex flex-row items-center justify-center gap-2 text-xs">
           <li className="">
             <Anchor as={Link} to="/legal/privacy">
               Privacy policy
@@ -47,7 +47,7 @@ export default function Footer() {
               Contact Us
             </Anchor>
           </li>
-        </ul>
+        </ul> */}
         <div className="hidden" aria-hidden="true">
           <Anchor
             href="https://vaibhavacharya.github.io/"

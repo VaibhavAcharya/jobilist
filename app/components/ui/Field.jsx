@@ -6,8 +6,6 @@ import Lock from "../icons/Lock";
 import Ban from "../icons/Ban";
 import Beaker from "../icons/Beaker";
 
-import { getCurrencySymbolFromCurrencyValue } from "../../helpers/misc";
-
 function Field(
   {
     component: Component = Input,
@@ -18,9 +16,6 @@ function Field(
     disabled = false,
     inDevelopment = false,
     error,
-    currency,
-    price,
-    discountedPrice,
     children,
     ...otherProps
   },
@@ -48,26 +43,6 @@ function Field(
           {secret ? <Lock size={12} className="text-neutral-400" /> : null}
           {!required ? (
             <span className="text-xs text-neutral-400">(Optional)</span>
-          ) : null}
-          {price ? (
-            <p className="text-xs flex flex-row items-baseline justify-start gap-1">
-              {discountedPrice ? (
-                <span className="text-green-200">
-                  {getCurrencySymbolFromCurrencyValue(currency)}
-                  {discountedPrice}
-                </span>
-              ) : null}
-              <span
-                className={[
-                  discountedPrice
-                    ? "line-through text-neutral-400"
-                    : "text-green-200",
-                ].join(" ")}
-              >
-                {getCurrencySymbolFromCurrencyValue(currency)}
-                {price}
-              </span>
-            </p>
           ) : null}
         </label>
       ) : null}

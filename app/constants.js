@@ -162,24 +162,6 @@ export const JOB_EXPIRE_OPTIONS = [
 export const JOB_EXPIRE_OPTION_VALUES =
   getValuesFromOptions(JOB_EXPIRE_OPTIONS);
 
-export const CURRENCY_OPTIONS = [
-  {
-    value: "USD",
-    label: "$ / USD",
-    symbol: "$",
-
-    pricePost: 1 * 100, // $1 in cents
-  },
-  {
-    value: "INR",
-    label: "₹ / INR",
-    symbol: "₹",
-
-    pricePost: 75 * 100, // ₹50 in paisa
-  },
-];
-export const CURRENCY_OPTION_VALUES = getValuesFromOptions(CURRENCY_OPTIONS);
-
 export const JOB_PIN_OPTIONS = [
   {
     value: "0",

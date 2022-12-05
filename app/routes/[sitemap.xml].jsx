@@ -14,7 +14,6 @@ export async function loader() {
 
   urls.push(getURLEntry(`/`, "1.0"));
   urls.push(getURLEntry(`/post`, 0.8));
-  urls.push(getURLEntry(`/legal/privacy`, 0.25));
 
   try {
     const posts = await db.post.findMany();
@@ -37,6 +36,7 @@ export async function loader() {
 
       return search;
     });
+    
   } catch (error) {
     console.error(
       "Error while fetching posts and searches to generate sitemap.xml!",

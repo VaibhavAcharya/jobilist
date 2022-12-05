@@ -16,7 +16,6 @@ export default function Header({
   home = false,
   posting = false,
   afterPostSuccess = false,
-  afterPostFailure = false,
 }) {
   return (
     <div className="border-b border-neutral-800/50 bg-white/5 py-4 flex flex-col items-stretch justify-start gap-8">
@@ -27,14 +26,6 @@ export default function Header({
             <p className="font-medium text-sm">
               Congratulations! Your posts are live now.
             </p>
-          </div>
-        </Container>
-      ) : null}
-
-      {afterPostFailure ? (
-        <Container className="flex flex-row items-stretch justify-start">
-          <div className="flex-1 flex flex-row items-center justify-center gap-2 bg-red-500/20 p-2 rounded-md">
-            <p className="font-medium text-sm">Oops! Something went wrong.</p>
           </div>
         </Container>
       ) : null}
@@ -88,55 +79,79 @@ export default function Header({
               <h1 className="font-bold text-2xl bg-clip-text bg-gradient-to-br from-pink-400 via-blue-400 to-blue-600 text-transparent">
                 Where talent finds opportunity.
               </h1>
-              <p className="text-neutral-400">
-                A fantastic job search engine that connects job seekers with the
+              <p className="text-neutral-400 leading-tight text-sm">
+                A job search engine that connects job seekers with the
                 top employers across the world to help them find the perfect
                 career opportunity.
               </p>
             </div>
+              
             <div className="flex flex-col items-stretch justify-start gap-1">
               <p className="font-medium text-xs uppercase text-neutral-400">
                 Features
               </p>
-              <div className="flex flex-row items-center justify-start gap-2">
+              {/* <div className="flex flex-row items-center justify-start gap-2">
                 <Heart size={18} className="text-rose-400" />
                 <p className="text-sm">1% goes to charity</p>
-              </div>
+              </div> */}
+              
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
-                <p className="text-sm">Only $1 per post</p>
+                <p className="text-sm">Free forever</p>
               </div>
               <div className="flex flex-row items-center justify-start gap-2">
                 <Code size={18} className="text-indigo-400" />
                 <p className="text-sm">
                   <Anchor
-                    href="https://github.com/jobilist/jobilist"
+                    href="https://github.com/vaibhavacharya/jobilist"
                     target="_black"
                     rel="noopener noreferrer"
                     styled={false}
                     className="flex flex-row items-center justify-start gap-1"
                   >
                     <span>Open source</span>
-                    <External size={16} />
+                    <External size={16} className="text-blue-400" />
                   </Anchor>
                 </p>
               </div>
             </div>
           </div>
-          <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
-            <div className="flex flex-col items-stretch justify-start">
-              <p className="font-medium text-lg">1000+</p>
-              <p className="text-sm text-neutral-400">daily visiters</p>
+          <div className="flex flex-row items-center justify-start gap-2">
+                <p className="text-sm">build w/{" "}
+                <Heart size={18} className="text-pink-400 inline" />
+                {" by "}
+          <Anchor
+            href="https://twitter.com/VaibhavAcharya_"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Vaibhav Acharya
+          </Anchor>{" "}
+          &{" "}
+          <Anchor
+            href="https://twitter.com/naman404"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Naman Vyas
+          </Anchor>
+          .
+        </p>
+              </div>
+          {/* <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
+            <div className="flex flex-col items-stretch justify-start gap-1">
+              <p className="leading-none font-medium text-lg">1000+</p>
+              <p className="leading-none text-sm text-neutral-400">daily visiters</p>
             </div>
-            <div className="flex flex-col items-stretch justify-start">
-              <p className="font-medium text-lg">50+</p>
-              <p className="text-sm text-neutral-400">active jobs</p>
+            <div className="flex flex-col items-stretch justify-start gap-1">
+              <p className="leading-none font-medium text-lg">50+</p>
+              <p className="leading-none text-sm text-neutral-400">active jobs</p>
             </div>
-            <div className="flex flex-col items-stretch justify-start">
-              <p className="font-medium text-lg">100+</p>
-              <p className="text-sm text-neutral-400">email subscribers</p>
+            <div className="flex flex-col items-stretch justify-start gap-1">
+              <p className="leading-none font-medium text-lg">100+</p>
+              <p className="leading-none text-sm text-neutral-400">email subscribers</p>
             </div>
-          </div>
+          </div> */}
         </Container>
       ) : null}
     </div>

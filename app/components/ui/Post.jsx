@@ -25,34 +25,54 @@ export function Post({ post, expanded = false }) {
       ].join(" ")}
     >
       <div className="flex flex-row items-start justify-start gap-4">
-        {post.batch?.logoURL ? (
-          <img
-            src={post.batch.logoURL}
-            alt={`logo ${post.batch.name}`}
-            className="w-[32px] h-[32px] text-xs truncate rounded object-cover"
-            loading="lazy"
-            width={32}
-            height={32}
-          />
-        ) : (
-          <Office width={32} height={32} className="text-neutral-400" />
-        )}
+        <Anchor
+          href={`${post.batch.website}?ref=https://www.jobilist.com`}
+          target="_blank"
+          rel="noopener noreferrer"
+          styled={false}
+          className="font-medium"
+        >
+          {post.batch?.logoURL ? (
+            <img
+              src={post.batch.logoURL}
+              alt={`logo ${post.batch.name}`}
+              className="w-[32px] h-[32px] text-xs truncate rounded object-cover"
+              loading="lazy"
+              width={32}
+              height={32}
+            />
+          ) : (
+            <Office width={32} height={32} className="text-neutral-400" />
+          )}
+        </Anchor>
 
-        <div className="flex-1 flex flex-col items-stretch justify-start gap-2">
+        <div className="flex-1 flex flex-col items-stretch justify-start gap-1">
           <div className="flex flex-col items-stretch justify-start">
-            <p className="flex flex-row items-baseline justify-start flex-wrap gap-x-2 gap-y-0">
+            <p className="flex flex-row items-center justify-start flex-wrap gap-x-2 gap-y-0">
+              <Anchor
+                as={Link} to={`/p/${post.id}`}
+                styled={false}
+              >
+                {post.batch.name}
+              </Anchor>
               <Anchor
                 href={`${post.batch.website}?ref=https://www.jobilist.com`}
                 target="_blank"
                 rel="noopener noreferrer"
                 styled={false}
-                className="font-medium"
+                className="font-medium text-neutral-400"
               >
-                {post.batch.name}
+                <External />
               </Anchor>
               <span className="text-sm text-neutral-400">is looking for</span>
             </p>
-            <p className="font-medium text-lg">{post.title}</p>
+            <Anchor
+              as={Link} to={`/p/${post.id}`}
+              styled={false}
+              className="font-medium text-lg"
+            >
+              {post.title}
+            </Anchor>
           </div>
           <div className="flex flex-row items-center justify-start gap-2">
             <Sparkles className="text-indigo-400" />
