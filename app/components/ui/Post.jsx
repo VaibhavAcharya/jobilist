@@ -49,10 +49,7 @@ export function Post({ post, expanded = false }) {
         <div className="flex-1 flex flex-col items-stretch justify-start gap-1">
           <div className="flex flex-col items-stretch justify-start">
             <p className="flex flex-row items-center justify-start flex-wrap gap-x-2 gap-y-0">
-              <Anchor
-                as={Link} to={`/p/${post.id}`}
-                styled={false}
-              >
+              <Anchor as={Link} to={`/p/${post.id}`} styled={false}>
                 {post.batch.name}
               </Anchor>
               <Anchor
@@ -67,7 +64,8 @@ export function Post({ post, expanded = false }) {
               <span className="text-sm text-neutral-400">is looking for</span>
             </p>
             <Anchor
-              as={Link} to={`/p/${post.id}`}
+              as={Link}
+              to={`/p/${post.id}`}
               styled={false}
               className="font-medium text-lg"
             >

@@ -5,7 +5,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
   useLocation,
 } from "@remix-run/react";
 
@@ -50,11 +49,14 @@ export function links() {
 export default function Root() {
   const location = useLocation();
 
-  useEffect(function () {
-    (async function () {
-      await fetch(`/api/view?url=${location.pathname}`);
-    })();
-  }, [location.pathname]);
+  useEffect(
+    function () {
+      (async function () {
+        await fetch(`/api/view?url=${location.pathname}`);
+      })();
+    },
+    [location.pathname]
+  );
 
   return (
     <html
@@ -70,7 +72,7 @@ export default function Root() {
 
         <ScrollRestoration />
         <Scripts />
-        
+
         <LiveReload />
       </body>
     </html>

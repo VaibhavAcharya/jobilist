@@ -36,7 +36,6 @@ export async function loader() {
 
       return search;
     });
-    
   } catch (error) {
     console.error(
       "Error while fetching posts and searches to generate sitemap.xml!",

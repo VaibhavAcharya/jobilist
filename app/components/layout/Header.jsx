@@ -80,12 +80,12 @@ export default function Header({
                 Where talent finds opportunity.
               </h1>
               <p className="text-neutral-400 leading-tight text-sm">
-                A job search engine that connects job seekers with the
-                top employers across the world to help them find the perfect
-                career opportunity.
+                A job search engine that connects job seekers with the top
+                employers across the world to help them find the perfect career
+                opportunity.
               </p>
             </div>
-              
+
             <div className="flex flex-col items-stretch justify-start gap-1">
               <p className="font-medium text-xs uppercase text-neutral-400">
                 Features
@@ -94,7 +94,7 @@ export default function Header({
                 <Heart size={18} className="text-rose-400" />
                 <p className="text-sm">1% goes to charity</p>
               </div> */}
-              
+
               <div className="flex flex-row items-center justify-start gap-2">
                 <Scale size={18} className="text-teal-400" />
                 <p className="text-sm">Free forever</p>
@@ -117,27 +117,27 @@ export default function Header({
             </div>
           </div>
           <div className="flex flex-row items-center justify-start gap-2">
-                <p className="text-sm">build w/{" "}
-                <Heart size={18} className="text-pink-400 inline" />
-                {" by "}
-          <Anchor
-            href="https://twitter.com/VaibhavAcharya_"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vaibhav Acharya
-          </Anchor>{" "}
-          &{" "}
-          <Anchor
-            href="https://twitter.com/naman404"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Naman Vyas
-          </Anchor>
-          .
-        </p>
-              </div>
+            <p className="text-sm">
+              build w/ <Heart size={18} className="text-pink-400 inline" />
+              {" by "}
+              <Anchor
+                href="https://twitter.com/VaibhavAcharya_"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Vaibhav Acharya
+              </Anchor>{" "}
+              &{" "}
+              <Anchor
+                href="https://twitter.com/naman404"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Naman Vyas
+              </Anchor>
+              .
+            </p>
+          </div>
           {/* <div className="mt-4 flex flex-row items-stretch justify-start gap-4">
             <div className="flex flex-col items-stretch justify-start gap-1">
               <p className="leading-none font-medium text-lg">1000+</p>

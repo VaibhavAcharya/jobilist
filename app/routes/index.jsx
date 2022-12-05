@@ -54,12 +54,14 @@ export async function loader({ request }) {
                 OR: [
                   {
                     name: {
-                      contains: query, mode: "insensitive",
+                      contains: query,
+                      mode: "insensitive",
                     },
                   },
                   {
                     description: {
-                      contains: query, mode: "insensitive",
+                      contains: query,
+                      mode: "insensitive",
                     },
                   },
                 ],
@@ -232,7 +234,7 @@ export default function Index() {
               required={false}
               autoComplete="off"
               autoFocus
-              defaultValue={loaderData?.query ?? ''}
+              defaultValue={loaderData?.query ?? ""}
             />
             <Button type="submit" ghost>
               Search

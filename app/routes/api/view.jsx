@@ -1,7 +1,7 @@
 import { db } from "~/utils/db.server";
 
 export async function loader({ request }) {
-  const url = (new URL(request.url)).searchParams.get("url") ?? "/views";
+  const url = new URL(request.url).searchParams.get("url") ?? "/views";
 
   // await db.view.deleteMany()
 
@@ -10,16 +10,19 @@ export async function loader({ request }) {
       where: { url },
       update: {
         count: {
-          increment: 1
-        }
+          increment: 1,
+        },
       },
-      create: { url }
+      create: { url },
     });
   } catch (error) {
-    console.error(`Error while updating view count for '${request.url}'!`, error);
+    console.error(
+      `Error while updating view count for '${request.url}'!`,
+      error
+    );
   }
 
   return {
-    views: await db.view.findMany()
+    views: await db.view.findMany(),
   };
 }

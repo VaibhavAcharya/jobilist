@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  Form,
-  useActionData,
-  useTransition,
-} from "@remix-run/react";
+import { Form, useActionData, useTransition } from "@remix-run/react";
 
 import { addBatch } from "../../utils/posts.server";
 import { redirect, unstable_parseMultipartFormData } from "@remix-run/node";
@@ -103,15 +99,15 @@ export async function action({ request }) {
   }
 
   try {
-    await addBatch(batch, posts)
+    await addBatch(batch, posts);
 
     return redirect("/?success=true");
   } catch (e) {
     return {
       errors: {
-        other: "Unexpected server error!"
-      }
-    }
+        other: "Unexpected server error!",
+      },
+    };
   }
 }
 
@@ -151,10 +147,7 @@ export default function Post() {
           ) : null}
 
           <div className="w-auto mx-auto flex flex-row items-end justify-center flex-wrap gap-2">
-            <Button
-              type="submit"
-              disabled={transition.state !== "idle"}
-            >
+            <Button type="submit" disabled={transition.state !== "idle"}>
               Post
             </Button>
           </div>
